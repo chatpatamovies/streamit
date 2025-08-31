@@ -461,6 +461,7 @@ const TvShowHeroSlider = memo(() => {
         </div>
       </section>
 
+      {/* @ts-ignore */}
       <FsLightbox
         toggler={toggler}
         sources={["/assets/images/video/trailer.mp4"]}
@@ -470,5 +471,5 @@ const TvShowHeroSlider = memo(() => {
 });
 
 // TvShowHeroSlider.displayName = TvShowHeroSlider;
-TvShowHeroSlider.displayName= 'TvShowHeroSlider'
+TvShowHeroSlider.displayName = 'TvShowHeroSlider'
 export default TvShowHeroSlider;

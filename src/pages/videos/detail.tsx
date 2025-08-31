@@ -39,7 +39,7 @@ const VideoDetail = memo(() => {
     youtube: { iv_load_policy: 1 },
   };
 
-  const handlePlayerReady = (player:any) => {
+  const handlePlayerReady = (player: any) => {
     playerRef.current = player;
   };
 

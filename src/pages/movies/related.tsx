@@ -103,7 +103,7 @@ const RelatedPage = memo(() => {
     youtube: { iv_load_policy: 1 },
   };
 
-  const handlePlayerReady = (player:any) => {
+  const handlePlayerReady = (player: any) => {
     playerRef.current = player;
   };
   return (
@@ -555,7 +555,7 @@ const RelatedPage = memo(() => {
                   },
                 }}
               >
-                {newProduct.map((item:any, index:any) => {
+                {newProduct.map((item: any, index: any) => {
                   return (
                     <SwiperSlide tag="li" key={index}>
                       <ProductCard

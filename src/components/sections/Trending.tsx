@@ -484,6 +484,7 @@ const Trending = memo(() => {
           </Row>
         </Container>
       </section>
+      {/* @ts-ignore */}
       <FsLightbox
         toggler={toggler}
         sources={["/assets/images/video/trailer.mp4"]}

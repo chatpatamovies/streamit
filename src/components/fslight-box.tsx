@@ -37,6 +37,7 @@ const FsLightBox = memo((props: Props) => {
         </Link>
       </Col>
       <>
+        {/* @ts-ignore */}
         <FsLightbox
           maxYoutubeVideoDimensions={{ width: 700, height: 400 }}
           exitFullscreenOnClose={true}

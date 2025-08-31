@@ -14,7 +14,6 @@ import RelatedVideos from "../../components/sections/RelatedVideos";
 import UpcomingMovies from "../../components/sections/UpcomingMovies";
 import RelatedMovies from "../../components/sections/RelatedMovies";
 import RatingStar from "../../components/rating-star";
-import FsLightBox from "../../components/fslight-box";
 
 //function
 import { generateImgPath } from "../../StaticData/data";
@@ -23,6 +22,7 @@ import { generateImgPath } from "../../StaticData/data";
 //swiper
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
+import FsLightBox from "@/components/fslight-box";
 
 const RestrictedPage = memo(() => {
   // date, type
@@ -386,7 +386,7 @@ const RestrictedPage = memo(() => {
                       },
                     }}
                   >
-                    {shows.cast.map((item:any, index:any) => {
+                    {shows.cast.map((item: any, index: any) => {
                       return (
                         <SwiperSlide key={index}>
                           <Row className="cast-images m-0 align-items-center position-relative">
@@ -454,7 +454,7 @@ const RestrictedPage = memo(() => {
                       },
                     }}
                   >
-                    {shows.crew.map((item:any, index:any) => {
+                    {shows.crew.map((item: any, index: any) => {
                       return (
                         <SwiperSlide key={index}>
                           <Row className="cast-images m-0 align-items-center position-relative">

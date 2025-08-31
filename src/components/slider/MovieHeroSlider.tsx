@@ -493,6 +493,7 @@ const MovieHeroSlider = memo(() => {
           </div>
         </div>
       </section>
+      {/* @ts-ignore */}
       <FsLightbox
         toggler={toggler}
         sources={["/assets/images/video/trailer.mp4"]}

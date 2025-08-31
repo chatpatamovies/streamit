@@ -523,6 +523,7 @@ const HomeHeroSlider = memo(() => {
           </svg>
         </div>
       </Swiper>
+      {/* @ts-ignore */}
       <FsLightbox
         toggler={toggler}
         sources={["/assets/images/video/trailer.mp4"]}

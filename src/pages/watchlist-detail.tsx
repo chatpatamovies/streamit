@@ -94,6 +94,7 @@ const WatchlistDetail = memo(() => {
           </Row>
         </Container>
       </section>
+      {/* @ts-ignore */}
       <FsLightbox
         maxYoutubeVideoDimensions={{ width: 700, height: 400 }}
         exitFullscreenOnClose={true}

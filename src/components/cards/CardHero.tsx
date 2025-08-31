@@ -173,6 +173,7 @@ const CardHero: React.FC<CardHeroProps> = memo(({ link, title, rating, certifica
                 Watch Trailer
               </span>
             </Link>
+            {/* @ts-ignore */}
             <FsLightbox
               toggler={toggler}
               sources={[
