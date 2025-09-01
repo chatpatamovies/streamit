@@ -16,22 +16,25 @@ import TopPicsForYou from "@/components/sections/TopPicsForYou";
 import GenreSlider from "@/components/sections/GenreSlider";
 
 import { ottVerticleLatestMovies } from "@/StaticData/data";
+import { ClientProvider } from "@/providers/client.provider";
 
 const OTT = memo(() => {
 
   return (
     <>
-      <OttHeroSlider />
-      <ContinueWatching />
-      <TopTenMoviesToWatch />
-      <OnlyOnStreamit />
-      <VerticalSectionSlider sliderData={ottVerticleLatestMovies} />
-      <YourFavouritePersonality />
-      <PopularMovies />
-      <TabSlider />
-      <GenreSlider />
-      <RecommendedForYou />
-      <TopPicsForYou />
+      <ClientProvider>
+        <OttHeroSlider />
+        <ContinueWatching />
+        <TopTenMoviesToWatch />
+        <OnlyOnStreamit />
+        <VerticalSectionSlider sliderData={ottVerticleLatestMovies} />
+        <YourFavouritePersonality />
+        <PopularMovies />
+        <TabSlider />
+        <GenreSlider />
+        <RecommendedForYou />
+        <TopPicsForYou />
+      </ClientProvider>
     </>
   );
 });
