@@ -34,10 +34,10 @@ export async function middleware(request: NextRequest) {
             if (pb.authStore.isValid) {
 
 
-                if (pathname === "/auth/login") {
-                    const response = NextResponse.redirect(new URL('/', request.url));
-                    return response;
-                }
+                // if (pathname === "/auth/login") {
+                //     const response = NextResponse.redirect(new URL('/', request.url));
+                //     return response;
+                // }
 
                 const response = NextResponse.next();
                 return response;

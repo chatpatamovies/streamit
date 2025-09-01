@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 //router
 import Link from "next/link";
@@ -14,8 +14,12 @@ import BreadCrumbWidget from "@/components/BreadcrumbWidget";
 
 //seetingoffCanvas
 import SettingOffCanvas from "../components/setting/SettingOffCanvas";
+import pb from "@/lib/pocketbase";
+import { useRouter } from "next/navigation";
 
 const Frontend = (({ children }: any) => {
+
+  const router = useRouter();
   const [animationClass, setAnimationClass] = useState("animate__fadeIn");
 
   const scrollToTop = () => {
@@ -42,7 +46,20 @@ const Frontend = (({ children }: any) => {
     <>
       <main className="main-content">
         <BreadCrumbWidget />
-        <HeaderDefault />
+        <HeaderDefault profile={
+          {
+            name: pb.authStore.record?.name,
+            avatar: pb.authStore.record?.avatar,
+            uid: pb.authStore.record?.id || "",
+            collectionId: pb.authStore.record?.collectionId || ""
+          }
+        }
+          onLogout={() => {
+            pb.authStore.clear();
+            router.push("/auth/login");
+          }
+          }
+        />
 
         {children}
       </main>
