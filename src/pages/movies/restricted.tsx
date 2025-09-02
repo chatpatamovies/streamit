@@ -225,7 +225,7 @@ const RestrictedPage = memo(() => {
                       })}
                     </ul>
                   </Col>
-                  <FsLightBox image={shows.thumbnail} />
+                    <FsLightBox image={shows.thumbnail} />
                 </Row>
               </div>
               <div className="content-details trending-info">
