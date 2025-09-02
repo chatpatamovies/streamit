@@ -1,0 +1,36 @@
+[
+    {
+      "image": "/assets/images/movies/banner1.webp",
+      "title": "Another Danger",
+      "rating": "4.3/5",
+      "genres": ["Action"],
+      "tags": ["Action", "Adventure", "Horror"],
+      "duration": "2 Hr : 6 Mins",
+      "description": "Piracy is an act of robbery or criminal violence by ship or boat-borne attackers upon another ship or a coastal area, typically with the goal of stealing cargo and other valuable items or properties.",
+      "link": "/movies/detail",
+      "trailer": "/assets/images/video/trailer.mp4"
+    },
+    {
+      "image": "/assets/images/movies/banner2.webp",
+      "title": "Bumblebee",
+      "rating": "4.3/5",
+      "genres": ["Action"],
+      "tags": ["Action", "Adventure", "Horror"],
+      "duration": "2 Hr : 6 Mins",
+      "description": "Optimus Prime sends Autobot scout B-127 to Earth to form a base where they can regroup. Later, the scout befriends a girl named Charlie, who names him Bumblebee.",
+      "link": "/movies/detail",
+      "trailer": "/assets/images/video/trailer.mp4"
+    },
+    {
+      "image": "/assets/images/movies/banner3.webp",
+      "title": "Another Danger",
+      "rating": "4.3/5",
+      "genres": ["Action"],
+      "tags": ["Action", "Adventure", "Horror"],
+      "duration": "2 Hr : 6 Mins",
+      "description": "Piracy is an act of robbery or criminal violence by ship or boat-borne attackers upon another ship or a coastal area, typically with the goal of stealing cargo and other valuable items or properties.",
+      "link": "/movies/detail",
+      "trailer": "/assets/images/video/trailer.mp4"
+    }
+  ]
+  
