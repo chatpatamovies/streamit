@@ -1098,7 +1098,7 @@ const HeaderDefault = memo((
                         >
                           <li className="user-info d-flex align-items-center gap-3 mb-3">
                             <img
-                              src={`${pb.baseURL}/api/files/${profile.collectionId}/5521onsp14r18hg/acg8oc_jdcvj0_x7_j381_ihaf_kg_yhtep_nuy_zuwl_aeu_lwt7_qv_sr2on3e_s96_c_wrqup92zcw_frukppuoii.jpg`}
+                              src={`${pb.baseURL}/api/files/${profile.collectionId}/${profile.uid}/${profile.avatar}`}
                               className="img-fluid"
                               alt=""
                               loading="lazy"
