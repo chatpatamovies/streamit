@@ -1,4 +1,4 @@
-import { Fragment, memo } from "react"
+import { Fragment, memo, useState } from "react"
 
 // react-bootstrap
 import { Col, Container, Row } from "react-bootstrap"
@@ -8,11 +8,71 @@ import Link from "next/link";
 
 //custom hook
 import { useBreadcrumb } from "@/utilities/usePage";
+import pb from "@/lib/pocketbase";
 
-const PricingPage = memo(() => {
+const PricingPage = () => {
   useBreadcrumb('Pricing Plan')
+
+  const [isSubscribed, setIsSubscribed] = useState(false); // Toggle state
+  const [loading, setLoading] = useState(false);
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleSubscribe = async () => {
+    setLoading(true);
+    const res = await fetch('/api/create-subscription', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan_id: 'plan_RD1vrLMOPOxx0f', customer_id: pb.authStore.record?.id }),
+    });
+    const subscription = await res.json();
+
+    const scriptLoaded = await loadRazorpayScript();
+    if (!scriptLoaded) {
+      alert('Razorpay SDK failed to load');
+      setLoading(false);
+      return;
+    }
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Use public key here
+      subscription_id: subscription.id,
+      name: 'Streamit',
+      description: 'Subscribe for ₹99/month',
+      handler: async (response: any) => {
+        // Verify on backend if needed, then toggle
+        setIsSubscribed(true); // Or fetch status from DB
+        alert('Subscription successful!');
+      },
+      prefill: {
+        name: pb.authStore.record?.name,
+        email: pb.authStore.record?.email,
+        // contact: '8249587552',
+      },
+      theme: { color: '#F37254' },
+    };
+
+    // @ts-ignore
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+    setLoading(false);
+  };
+
   return (
     <Fragment>
+      {isSubscribed ? (
+        <div>Premium Item Visible: Here's the exclusive content!</div>
+      ) : (
+        <div>Subscribe to view the item.</div>
+      )}
       <div className="section-padding">
         <Container>
           <Row>
@@ -43,6 +103,9 @@ const PricingPage = memo(() => {
                     </ul>
                   </div>
                   <div className="pricing-plan-footer">
+                    <button onClick={handleSubscribe} disabled={loading}>
+                      Subscribe for ₹129/month
+                    </button>
                     <div className="iq-button">
                       <Link href="#" className="btn text-uppercase position-relative">
                         <span className="button-text">select free</span>
@@ -140,7 +203,7 @@ const PricingPage = memo(() => {
       </div>
     </Fragment>
   )
-})
+}
 
 PricingPage.displayName = "PricingPage"
 export default PricingPage;
