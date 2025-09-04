@@ -16,12 +16,11 @@ export default async function handler(
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { amount, customer_id, plan_type, plan_id } = req.body;
+    const { customer_id, plan_id } = req.body;
 
-    console.log('Creating subscription for amount:', amount, 'customer:', customer_id, 'plan type:', plan_type);
 
-    if (!amount || !customer_id || !plan_type) {
-        return res.status(400).json({ error: 'Missing amount, customer_id, or plan_type' });
+    if (!customer_id || !plan_id) {
+        return res.status(400).json({ error: 'Missing  customer_id or plan_id' });
     }
 
     try {
@@ -36,17 +35,6 @@ export default async function handler(
 
         pb.authStore.clear();
 
-        // Create a plan dynamically based on the amount
-        // const plan = await rzp.plans.create({
-        //     period: 'monthly',
-        //     interval: 1,
-        //     item: {
-        //         name: `${plan_type} Plan`,
-        //         amount: Number(amount) * 100, // Convert to paise
-        //         currency: 'INR',
-        //         description: `${plan_type} subscription plan`
-        //     }
-        // });
 
         // Create subscription using the newly created plan
         const subscription = await rzp.subscriptions.create({
@@ -55,7 +43,6 @@ export default async function handler(
             total_count: 12, // 12 months
             notes: {
                 customer_id: String(customer_id).trim(),
-                plan_type: String(plan_type).trim(),
             },
         });
 

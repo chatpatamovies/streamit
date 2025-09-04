@@ -1,18 +1,42 @@
-import { Fragment, memo, useState } from "react";
-import { useRouter } from "next/router"; // Import useRouter for redirection
+import { Fragment, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Col, Container, Row } from "react-bootstrap";
 import { useBreadcrumb } from "@/utilities/usePage";
 import pb from "@/lib/pocketbase";
 
+// Define an interface for the plan object for better type safety
+interface Plan {
+  id: string;
+  name: string;
+  price: number;
+  actual_price?: number; // Optional actual price for showing discounts
+  features: { text: string; available: boolean }[];
+  rzp_plan_id: string;
+}
+
 const PricingPage = () => {
   useBreadcrumb("Pricing Plan");
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
+
+  const [plans, setPlans] = useState<Plan[]>([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [loadingStates, setLoadingStates] = useState({
-    Free: false,
-    Premium: false,
-    Basic: false
-  });
+  const [loadingStates, setLoadingStates] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        // Fetch plans sorted by price in ascending order
+        const fetchedPlans = await pb.collection("plans").getFullList<Plan>({ sort: "price" });
+        console.log("Available Plans:", fetchedPlans);
+        setPlans(fetchedPlans);
+      } catch (error) {
+        console.error("Failed to load plans:", error);
+        // Optionally, set an error state to show a message to the user
+      }
+    };
+
+    loadPlans();
+  }, []);
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -24,34 +48,27 @@ const PricingPage = () => {
     });
   };
 
-  const handleSubscribe = async (planType: string, price: number) => {
-    // Check if user is authenticated
+  const handleSubscribe = async (plan_id: string) => {
     if (!pb.authStore.isValid || !pb.authStore.record) {
-      router.push("/auth/login"); // Redirect to /auth/login if not logged in
+      router.push("/auth/login");
       return;
     }
 
-    // Set loading state for the specific plan
-    setLoadingStates(prev => ({ ...prev, [planType]: true }));
+    setLoadingStates(prev => ({ ...prev, [plan_id]: true }));
 
     try {
       const res = await fetch("/api/create-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          plan_id: "plan_RD1vrLMOPOxx0f", // ! Make it dynamic later
+          plan_id,
           customer_id: pb.authStore.record?.id,
-          plan_type: planType,
-          amount: price,
         }),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to create subscription");
-      }
+      if (!res.ok) throw new Error("Failed to create subscription");
 
       const subscription = await res.json();
-
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
         alert("Razorpay SDK failed to load");
@@ -62,19 +79,21 @@ const PricingPage = () => {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         subscription_id: subscription.id,
         name: "Streamit",
-        description: `Subscribe for ${planType} - ₹${price}`,
         handler: async (response: any) => {
           const { razorpay_payment_id, razorpay_subscription_id } = response;
           try {
-            // Call backend API to verify and update DB
             const verifyRes = await fetch('/api/verify-subscription', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ paymentId: razorpay_payment_id, subscriptionId: razorpay_subscription_id, userId: pb.authStore.record?.id }),
+              body: JSON.stringify({
+                paymentId: razorpay_payment_id,
+                subscriptionId: razorpay_subscription_id,
+                userId: pb.authStore.record?.id
+              }),
             });
             const verifyData = await verifyRes.json();
             if (verifyData.success) {
-              setIsSubscribed(true); // Optimistic UI update
+              setIsSubscribed(true);
               alert('Subscription successful!');
             } else {
               alert('Verification failed—please check later.');
@@ -82,7 +101,6 @@ const PricingPage = () => {
           } catch (error) {
             console.error('Verification error:', error);
             alert('Payment succeeded, but verification delayed. Content will unlock soon.');
-            // Still toggle optimistically if you trust the handler
             setIsSubscribed(true);
           }
         },
@@ -100,13 +118,25 @@ const PricingPage = () => {
       console.error("Subscription error:", error);
       alert("An error occurred during subscription. Please try again.");
     } finally {
-      // Reset loading state for the specific plan
-      setLoadingStates(prev => ({ ...prev, [planType]: false }));
+      setLoadingStates(prev => ({ ...prev, [plan_id]: false }));
     }
+  };
+
+  // Helper function to get button class based on plan name
+  const getButtonClass = (planName: string) => {
+    const name = planName.toLowerCase();
+    if (name.includes('premium')) {
+      return 'premium-btn';
+    }
+    if (name.includes('basic')) {
+      return 'basic-btn';
+    }
+    return 'free-btn'; // Default or for other plans
   };
 
   return (
     <Fragment>
+
       <style jsx>{`
         .pricing-card {
           border: 2px solid #333;
@@ -338,152 +368,90 @@ const PricingPage = () => {
         .alert-info {
           background: linear-gradient(135deg, #0d2b3e 0%, #1a3d55 100%);
         }
+          .active-plan-card {
+          border: 3px solid #27ae60; /* Using the green check color */
+          background: linear-gradient(135deg, #102d21 0%, #1a1a1a 100%);
+        }
+        .active-plan-badge {
+          background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+          color: white;
+          padding: 10px 0;
+          text-align: center;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1.5px;
+        }
       `}</style>
-
-      {isSubscribed ? (
-        <div className="alert alert-success text-center mx-3 mb-4">
-          <h4>🎉 Premium Item Visible: Here's the exclusive content!</h4>
-        </div>
-      ) : (
-        <div className="alert alert-info text-center mx-3 mb-4">
-          📺 Subscribe to view exclusive content and unlock all features!
-        </div>
-      )}
 
       <div className="section-padding">
         <Container>
+          {/* DEMO ACTIVE PLAN CARD */}
+          <Row className="justify-content-center mb-5">
+            <Col lg="8" md="10">
+              <div className="pricing-card active-plan-card">
+                <div className="active-plan-badge">
+                  Your Current Plan
+                </div>
+                <div className="plan-header d-flex justify-content-between align-items-center px-4">
+                  <div>
+                    <h4 className="plan-name">Premium</h4>
+                    <p className="period mb-0">Your subscription is active until October 5, 2025.</p>
+                  </div>
+                  <div className="subscribe-footer p-0">
+                    <button className="subscribe-btn" disabled>
+                      Manage Subscription
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+
+          {/* DYNAMIC PRICING PLANS */}
           <Row className="justify-content-center">
-            <Col lg="4" md="6" className="mb-4">
-              <div className="pricing-card">
-                <div className="plan-header">
-                  <h4 className="plan-name">Basic</h4>
-                  <div className="price-container">
-                    <span className="currency">₹</span>
-                    <span className="main-price">99</span>
-                    <div className="period">per month</div>
-                  </div>
-                </div>
-                <div className="features-list">
-                  <ul>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">Limited movies and shows</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-times times-icon"></i>
-                      <span className="feature-text">Watch on TV or Laptop</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-times times-icon"></i>
-                      <span className="feature-text">Streamit Special</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-times times-icon"></i>
-                      <span className="feature-text">Max video quality</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="subscribe-footer">
-                  <button
-                    className="subscribe-btn free-btn"
-                    onClick={() => handleSubscribe('Free', 99)}
-                    disabled={loadingStates.Free}
-                  >
-                    {loadingStates.Free ? 'Processing...' : 'Subscribe for ₹99/month'}
-                  </button>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg="4" md="6" className="mb-4">
-              <div className="pricing-card premium-card">
-                <div className="premium-badge">
-                  Most Popular - Save 25%
-                </div>
-                <div className="plan-header">
-                  <h4 className="plan-name">Premium</h4>
-                  <div className="price-container">
-                    <span className="sale-price">₹249</span>
-                    <div>
-                      <span className="currency">₹</span>
-                      <span className="main-price">199</span>
+            {plans.map((plan) => (
+              <Col lg="4" md="6" className="mb-4" key={plan.id}>
+                <div className={`pricing-card ${plan.name === 'Premium' ? 'premium-card' : ''}`}>
+                  {plan.name === 'Premium' && (
+                    <div className="premium-badge">
+                      Most Popular
                     </div>
-                    <div className="period">per month</div>
+                  )}
+                  <div className="plan-header">
+                    <h4 className="plan-name">{plan.name}</h4>
+                    <div className="price-container">
+                      {plan.actual_price && plan.actual_price > plan.price && (
+                        <span className="sale-price">₹{plan.actual_price}</span>
+                      )}
+                      <div>
+                        <span className="currency">₹</span>
+                        <span className="main-price">{plan.price}</span>
+                      </div>
+                      <div className="period">per month</div>
+                    </div>
+                  </div>
+                  <div className="features-list">
+                    <ul>
+                      {plan.features.map((feature, index) => (
+                        <li key={index}>
+                          <i className={feature.available ? 'fas fa-check check-icon' : 'fas fa-times times-icon'}></i>
+                          <span className="feature-text">{feature.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="subscribe-footer">
+                    <button
+                      className={`subscribe-btn ${getButtonClass(plan.name)}`}
+                      onClick={() => handleSubscribe(plan.rzp_plan_id)}
+                      disabled={loadingStates[plan.rzp_plan_id]}
+                    >
+                      {loadingStates[plan.rzp_plan_id] ? 'Processing...' : `Subscribe for ₹${plan.price}/month`}
+                    </button>
                   </div>
                 </div>
-                <div className="features-list">
-                  <ul>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">Ads free movies and shows</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">Watch on TV or Laptop</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">Streamit Special</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">4K Ultra HD quality</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="subscribe-footer">
-                  <button
-                    className="subscribe-btn premium-btn"
-                    onClick={() => handleSubscribe('Premium', 199)}
-                    disabled={loadingStates.Premium}
-                  >
-                    {loadingStates.Premium ? 'Processing...' : 'Subscribe for ₹199/month'}
-                  </button>
-                </div>
-              </div>
-            </Col>
-
-            <Col lg="4" md="6" className="mb-4">
-              <div className="pricing-card">
-                <div className="plan-header">
-                  <h4 className="plan-name">Ultra Premium</h4>
-                  <div className="price-container">
-                    <span className="currency">₹</span>
-                    <span className="main-price">349</span>
-                    <div className="period">per month</div>
-                  </div>
-                </div>
-                <div className="features-list">
-                  <ul>
-                    <li>
-                      <i className="fas fa-times times-icon"></i>
-                      <span className="feature-text">Ads free movies and shows</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">Watch on TV or Laptop</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">Streamit Special</span>
-                    </li>
-                    <li>
-                      <i className="fas fa-check check-icon"></i>
-                      <span className="feature-text">HD video quality</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="subscribe-footer">
-                  <button
-                    className="subscribe-btn basic-btn"
-                    onClick={() => handleSubscribe('Basic', 349)}
-                    disabled={loadingStates.Basic}
-                  >
-                    {loadingStates.Basic ? 'Processing...' : 'Subscribe for ₹349/month'}
-                  </button>
-                </div>
-              </div>
-            </Col>
+              </Col>
+            ))}
           </Row>
         </Container>
       </div>
