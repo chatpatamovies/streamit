@@ -38,8 +38,4 @@ export default async function handler(
         return res.status(500).json({ error: 'Failed to create subscription' });
     }
 
-
-
-
-    res.status(200).json({ message: 'Hello from Next.js!', plan_id, customer_id })
 }
