@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro'; // For raw body
 import crypto from 'crypto';
+import pb from '@/lib/pocketbase';
 
 // Disable Next.js body parsing to access raw body
 export const config = {
@@ -30,10 +31,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (sig === digest) {
             const event = JSON.parse(rawBody); // Parse the raw body now
             if (event.event === 'subscription.charged' || event.event === 'subscription.activated') {
+
+                pb.authStore.save(process.env.DB_SUPER_USER_TOKEN!);
+
                 const subscription = event.payload.subscription.entity;
+
+                await pb.collection("users").update(subscription.notes.customer_id, {
+                    // TODO: we will make the plan expiry dynamic later based on the plan type
+                    plan_expiry: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
+                });
+
+                await pb.collection('users').update(
+                    subscription.notes.customer_id, {
+                    subscription_id: subscription.id,
+                    subscription_status: 'active',
+                });
+
+                pb.authStore.clear();
                 console.log('Subscription Event:', JSON.stringify(subscription));
-                // Update your database (e.g., PocketBase) here
-                // Example: await updateUserSubscription(subscription.id, 'active');
             }
             return res.status(200).json({ status: 'ok' });
         } else {

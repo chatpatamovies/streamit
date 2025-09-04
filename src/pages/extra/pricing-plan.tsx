@@ -39,7 +39,7 @@ const PricingPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          plan_id: "plan_RD1vrLMOPOxx0f",
+          plan_id: "plan_RD1vrLMOPOxx0f", // ! Make it dynamic later
           customer_id: pb.authStore.record?.id,
           plan_type: planType,
           amount: price,
@@ -64,8 +64,27 @@ const PricingPage = () => {
         name: "Streamit",
         description: `Subscribe for ${planType} - ₹${price}`,
         handler: async (response: any) => {
-          setIsSubscribed(true);
-          alert("Subscription successful!");
+          const { razorpay_payment_id, razorpay_subscription_id } = response;
+          try {
+            // Call backend API to verify and update DB
+            const verifyRes = await fetch('/api/verify-subscription', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ paymentId: razorpay_payment_id, subscriptionId: razorpay_subscription_id, userId: pb.authStore.record?.id }),
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyData.success) {
+              setIsSubscribed(true); // Optimistic UI update
+              alert('Subscription successful!');
+            } else {
+              alert('Verification failed—please check later.');
+            }
+          } catch (error) {
+            console.error('Verification error:', error);
+            alert('Payment succeeded, but verification delayed. Content will unlock soon.');
+            // Still toggle optimistically if you trust the handler
+            setIsSubscribed(true);
+          }
         },
         prefill: {
           name: pb.authStore.record?.name,

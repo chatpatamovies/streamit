@@ -1,3 +1,4 @@
+import pb from '@/lib/pocketbase';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Razorpay from 'razorpay';
 
@@ -15,7 +16,7 @@ export default async function handler(
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { amount, customer_id, plan_type } = req.body;
+    const { amount, customer_id, plan_type, plan_id } = req.body;
 
     console.log('Creating subscription for amount:', amount, 'customer:', customer_id, 'plan type:', plan_type);
 
@@ -24,21 +25,32 @@ export default async function handler(
     }
 
     try {
+
+        pb.authStore.save(process.env.DB_SUPER_USER_TOKEN!);
+
+        const customer = await pb.collection("users").getOne(customer_id);
+
+        if (customer?.plan_expiry && new Date(customer.plan_expiry) > new Date()) {
+            return res.status(400).json({ error: 'User already has an active subscription' });
+        }
+
+        pb.authStore.clear();
+
         // Create a plan dynamically based on the amount
-        const plan = await rzp.plans.create({
-            period: 'monthly',
-            interval: 1,
-            item: {
-                name: `${plan_type} Plan`,
-                amount: Number(amount) * 100, // Convert to paise
-                currency: 'INR',
-                description: `${plan_type} subscription plan`
-            }
-        });
+        // const plan = await rzp.plans.create({
+        //     period: 'monthly',
+        //     interval: 1,
+        //     item: {
+        //         name: `${plan_type} Plan`,
+        //         amount: Number(amount) * 100, // Convert to paise
+        //         currency: 'INR',
+        //         description: `${plan_type} subscription plan`
+        //     }
+        // });
 
         // Create subscription using the newly created plan
         const subscription = await rzp.subscriptions.create({
-            plan_id: plan.id,
+            plan_id: plan_id,
             customer_notify: 1,
             total_count: 12, // 12 months
             notes: {
