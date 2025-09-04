@@ -18,7 +18,7 @@ const PricingPage = () => {
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js  ";
       script.onload = () => resolve(true);
       script.onerror = () => resolve(false);
       document.body.appendChild(script);
@@ -91,47 +91,51 @@ const PricingPage = () => {
     <Fragment>
       <style jsx>{`
         .pricing-card {
-          border: 2px solid #f0f0f0;
+          border: 2px solid #333;
           border-radius: 12px;
           overflow: hidden;
           transition: all 0.3s ease;
-          background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+          color: #ffffff;
         }
         
         .pricing-card:hover {
           transform: translateY(-8px);
-          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
           border-color: #e50914;
         }
         
         .premium-card {
           border: 3px solid #e50914;
           transform: scale(1.05);
-          background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+          background: linear-gradient(135deg, #221111 0%, #1a1a1a 100%);
+          position: relative;
+          z-index: 1;
         }
         
         .premium-badge {
           background: linear-gradient(135deg, #e50914 0%, #b8070f 100%);
           color: white;
-          padding: 8px 0;
+          padding: 10px 0;
           text-align: center;
           font-weight: bold;
           text-transform: uppercase;
-          letter-spacing: 1px;
+          letter-spacing: 1.5px;
+          font-size: 14px;
           box-shadow: 0 2px 10px rgba(229, 9, 20, 0.3);
         }
         
         .plan-header {
           padding: 30px 20px 20px;
           text-align: center;
-          background: white;
+          background: transparent;
         }
         
         .plan-name {
           font-size: 28px;
           font-weight: 700;
-          color: #2c3e50;
+          color: #ffffff;
           margin-bottom: 15px;
           text-transform: uppercase;
           letter-spacing: 1px;
@@ -157,14 +161,14 @@ const PricingPage = () => {
         
         .sale-price {
           font-size: 20px;
-          color: #95a5a6;
+          color: #aaa;
           margin-right: 10px;
           text-decoration: line-through;
         }
         
         .period {
           font-size: 16px;
-          color: #7f8c8d;
+          color: #bbb;
           font-weight: 500;
         }
         
@@ -182,7 +186,7 @@ const PricingPage = () => {
           padding: 12px 0;
           display: flex;
           align-items: center;
-          border-bottom: 1px solid #f1f2f6;
+          border-bottom: 1px solid #333;
         }
         
         .features-list li:last-child {
@@ -213,7 +217,7 @@ const PricingPage = () => {
         .feature-text {
           font-size: 16px;
           font-weight: 500;
-          color: #2c3e50;
+          color: #ffffff;
         }
         
         .subscribe-footer {
@@ -223,9 +227,9 @@ const PricingPage = () => {
         .subscribe-btn {
           width: 100%;
           padding: 15px 25px;
-          background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #000000 100%);
+          background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
           color: white;
-          border: 2px solid #333;
+          border: 2px solid #444;
           border-radius: 8px;
           font-size: 16px;
           font-weight: 700;
@@ -233,7 +237,7 @@ const PricingPage = () => {
           transition: all 0.3s ease;
           text-transform: uppercase;
           letter-spacing: 1px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
           position: relative;
           overflow: hidden;
         }
@@ -255,14 +259,14 @@ const PricingPage = () => {
         
         .subscribe-btn:hover {
           transform: translateY(-3px);
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-          border-color: #555;
-          background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 50%, #000000 100%);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+          border-color: #666;
+          background: linear-gradient(135deg, #1a1a1a 0%, #000000 50%, #000000 100%);
         }
         
         .subscribe-btn:active {
           transform: translateY(-1px);
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
         
         .subscribe-btn:disabled {
@@ -272,35 +276,49 @@ const PricingPage = () => {
         }
         
         .free-btn {
-          background: linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 50%, #000000 100%);
-          border: 2px solid #444;
+          background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%);
+          border: 2px solid #333;
         }
         
         .free-btn:hover {
-          background: linear-gradient(135deg, #1f1f1f 0%, #0f0f0f 50%, #000000 100%);
-          border-color: #666;
+          background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #000000 100%);
+          border-color: #555;
         }
         
         .premium-btn {
-          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #000000 100%);
-          border: 2px solid #555;
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+          background: linear-gradient(135deg, #e50914 0%, #b8070f 100%);
+          border: 2px solid #ff2a33;
+          box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
         }
         
         .premium-btn:hover {
-          background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 50%, #111111 100%);
-          border-color: #777;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+          background: linear-gradient(135deg, #ff2a33 0%, #e50914 50%, #b8070f 100%);
+          border-color: #ff5c65;
+          box-shadow: 0 10px 30px rgba(229, 9, 20, 0.5);
         }
         
         .basic-btn {
-          background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #000000 100%);
+          background: linear-gradient(135deg, #111111 0%, #222222 50%, #000000 100%);
           border: 2px solid #333;
         }
         
         .basic-btn:hover {
-          background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #000000 100%);
+          background: linear-gradient(135deg, #222222 0%, #111111 50%, #000000 100%);
           border-color: #555;
+        }
+        
+        .alert {
+          border-radius: 8px;
+          border: none;
+          color: #ffffff;
+        }
+        
+        .alert-success {
+          background: linear-gradient(135deg, #0a3d1f 0%, #1a5c2f 100%);
+        }
+        
+        .alert-info {
+          background: linear-gradient(135deg, #0d2b3e 0%, #1a3d55 100%);
         }
       `}</style>
       
