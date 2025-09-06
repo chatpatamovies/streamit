@@ -1,21 +1,38 @@
-import { useState, Fragment, memo } from "react";
+import { FC, Fragment, memo, useState } from "react";
 
-//components
+// Components
 import SectionSlider from "../slider/SectionSlider";
 import CardStyle from "../cards/CardStyle";
 
-//static data
-import { spacialLatestMovie } from "../../StaticData/data";
+// Function
+import { generateImgPath } from "../../StaticData/data";
 
-const SpecialsLatestMovies = memo(() => {
+// Import JSON directly
+import specialsLatestMoviesData from "../../data/specialsLatestMovies.json";
+
+// Define type for movies (optional, keeps things clean)
+type Movie = {
+  image: string;
+  title: string;
+  movieTime: string;
+};
+
+const SpecialsLatestMovies: FC = memo(() => {
   const [title] = useState("Specials & Latest Movies");
+
+  // Map JSON -> resolve image paths
+  const movies: Movie[] = (specialsLatestMoviesData as Movie[]).map((item) => ({
+    ...item,
+    image: generateImgPath(item.image), // apply path utility
+  }));
 
   return (
     <Fragment>
       <SectionSlider
         title={title}
-        list={spacialLatestMovie}
+        list={movies}
         className="recommended-block streamit-block"
+        slidesPerView={5}
       >
         {(data) => (
           <CardStyle
@@ -29,7 +46,7 @@ const SpecialsLatestMovies = memo(() => {
       </SectionSlider>
     </Fragment>
   );
-})
+});
 
-SpecialsLatestMovies.displayName = 'SpecialsLatestMovies';
+SpecialsLatestMovies.displayName = "SpecialsLatestMovies";
 export default SpecialsLatestMovies;

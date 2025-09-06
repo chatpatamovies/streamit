@@ -1,0 +1,32 @@
+[
+  {
+    "image": "/assets/images/movies/movie-banner-1.webp",
+    "title": "John Wick",
+    "rating": 3.5,
+    "ratingText": "3.5(lmdb)",
+    "badge": "PG",
+    "time": "1hr : 44mins",
+    "year": "Feb 2018",
+    "description": "Dinosaurs are a diverse group of reptiles of the clade Dinosauria. They first appeared during the Triassic period, between 243 and 233.23 million years ago, although the exact origin and timing of the evolution of dinosaurs is the subject of active research."
+  },
+  {
+    "image": "/assets/images/movies/movie-banner-2.webp",
+    "title": "Jumanji",
+    "rating": 3.5,
+    "ratingText": "3.5(lmdb)",
+    "badge": "G",
+    "time": "2hr : 42mins",
+    "year": "Nov 2017",
+    "description": "The most brutal emperor in the history of world. He was the founder of the most contiguous empire of the world i.e. the Mongol empire. He made an army by himself by uniting some nomadic tribes and trained them."
+  },
+  {
+    "image": "/assets/images/movies/movie-banner-3.webp",
+    "title": "The Witcher",
+    "rating": 3.5,
+    "ratingText": "3.5(lmdb)",
+    "badge": "PG-13",
+    "time": "2hr : 12mins",
+    "year": "Dec 2018",
+    "description": "Jumbo also known as Jumbo the Elephant and Jumbo the Circus Elephant, was a 19th-century male African bush elephant born in Sudan. Jumbo was exported to Jardin des Plantes, a zoo in Paris, and then transferred in 1865 to London Zoo in England."
+  }
+]

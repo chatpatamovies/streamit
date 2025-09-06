@@ -1,23 +1,31 @@
-import { useState, Fragment, memo } from "react";
+import { FC, Fragment, memo, useState } from "react";
 
-//componets
+// Components
 import SectionSlider from "../slider/SectionSlider";
 import CardStyle from "../cards/CardStyle";
 
-//static data
-import { populerSlider } from "../../StaticData/data";
+// Function
+import { generateImgPath } from "../../StaticData/data";
 
+// Import JSON directly
+import popularMoviesData from "../../data/popularMovies.json";
 
-
-const PopularMovies = memo(()=> {
+const PopularMovies: FC = memo(() => {
   const [title] = useState("Popular Movies");
+
+  // Map JSON -> apply image path
+  const movies = popularMoviesData.map((item) => ({
+    ...item,
+    image: generateImgPath(item.image),
+  }));
 
   return (
     <Fragment>
       <SectionSlider
         title={title}
-        list={populerSlider}
+        list={movies}
         className="popular-movies-block streamit-block"
+        slidesPerView={5}
       >
         {(data) => (
           <CardStyle
@@ -31,7 +39,7 @@ const PopularMovies = memo(()=> {
       </SectionSlider>
     </Fragment>
   );
-})
+});
 
-PopularMovies.displayName = 'PopularMovies';
+PopularMovies.displayName = "PopularMovies";
 export default PopularMovies;
