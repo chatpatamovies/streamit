@@ -112,7 +112,7 @@ const HeaderDefault = memo((
                   >
                     <Nav.Item as="li">
                       <Nav.Link
-                        href=""
+                        href="/"
                         aria-expanded={open}
                         onClick={() => setOpen(!open)}
                         className={`${location.asPath === "/" ||
@@ -126,7 +126,7 @@ const HeaderDefault = memo((
                           }`}
                       >
                         <span className="item-name">Home</span>
-                        <span className="menu-icon ms-2">
+                        {/* <span className="menu-icon ms-2">
                           <i
                             className="fa fa-caret-down toggledrop-desktop right-icon"
                             aria-hidden="true"
@@ -141,9 +141,9 @@ const HeaderDefault = memo((
                               aria-hidden="true"
                             ></i>
                           </span>
-                        </span>
+                        </span> */}
                       </Nav.Link>
-                      <Collapse
+                      {/* <Collapse
                         in={open}
                         className={`sub-nav justify-content-center list-unstyled ${isMega ? " mega-menu-item" : ""
                           }`}
@@ -164,7 +164,7 @@ const HeaderDefault = memo((
                               ) : (
                                 ""
                               )}
-                              <span className="d-inline-block">OTT Home</span>
+                              <span className="d-inline-block">Home</span>
                             </Link>
                           </Nav.Item>
                           <Nav.Item as="li">
@@ -264,9 +264,9 @@ const HeaderDefault = memo((
                             </Link>
                           </Nav.Item>
                         </ul>
-                      </Collapse>
+                      </Collapse> */}
                     </Nav.Item>
-                    <Nav.Item as="li">
+                    {/* <Nav.Item as="li">
                       <Nav.Link
                         aria-expanded={open1}
                         href=""
@@ -369,7 +369,7 @@ const HeaderDefault = memo((
                           </Nav.Item>
                         </ul>
                       </Collapse>
-                    </Nav.Item>
+                    </Nav.Item> */}
                     <Nav.Item as="li">
                       <Nav.Link
                         aria-expanded={open2}
@@ -380,7 +380,7 @@ const HeaderDefault = memo((
                           : ""
                           }`}
                       >
-                        <span className="item-name">Pages</span>
+                        <span className="item-name">More</span>
                         <span className="menu-icon ms-2">
                           <i
                             className="fa fa-caret-down toggledrop-desktop right-icon"
@@ -456,7 +456,7 @@ const HeaderDefault = memo((
                               Pricing Plan{" "}
                             </Link>
                           </Nav.Item>
-                          <Nav.Item as="li">
+                          {/* <Nav.Item as="li">
                             <Link
                               href="/extra/coming-soon"
                               className={`nav-link`}
@@ -464,8 +464,8 @@ const HeaderDefault = memo((
                               {" "}
                               Coming Soon{" "}
                             </Link>
-                          </Nav.Item>
-                          <Nav.Item as="li">
+                          </Nav.Item> */}
+                          {/* <Nav.Item as="li">
                             <Nav.Link
                               aria-expanded={open3}
                               href=""
@@ -514,11 +514,11 @@ const HeaderDefault = memo((
                                 </Nav.Item>
                               </ul>
                             </Collapse>
-                          </Nav.Item>
+                          </Nav.Item> */}
                         </ul>
                       </Collapse>
                     </Nav.Item>
-                    <Nav.Item as="li">
+                    {/* <Nav.Item as="li">
                       <Nav.Link
                         aria-expanded={open4}
                         href=""
@@ -932,7 +932,7 @@ const HeaderDefault = memo((
                           </Nav.Item>
                         </ul>
                       </Collapse>
-                    </Nav.Item>
+                    </Nav.Item> */}
                   </ul>
                 </Container>
               </Navbar>

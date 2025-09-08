@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useMemo, useState } from "react";
+import { Fragment, memo, useEffect, useMemo } from "react";
 // Import Spinner from react-bootstrap
 import { Row, Col, Container, Nav, Tab, Spinner } from "react-bootstrap";
 import Link from 'next/link';
@@ -6,11 +6,8 @@ import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 // Components
-import ReviewComponent from "@/components/ReviewComponent";
 import RatingStar from "@/components/rating-star";
 import FsLightBox from "@/components/fslight-box";
-import Sources from "@/components/Sources";
-import VideoJS from "@/components/plugins/VideoJs";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 
@@ -22,7 +19,6 @@ import { theme_scheme_direction } from "@/store/setting/selectors";
 import pb from "@/lib/pocketbase";
 import { useEnterExit } from "@/utilities/usePage";
 import { generateImgPath } from "@/StaticData/data";
-import videojs from "video.js";
 import { ClientProvider } from "@/providers/client.provider";
 import { formatTime } from "@/helper/ms-to-hm";
 import { fetchStreamSource } from "@/helper/fetch-stream-details";
@@ -48,7 +44,6 @@ const EpisodePage = memo(() => {
     const { slug: seriesSlug, 'season-slug': seasonSlug, 'episode-slug': episodeSlug } = router.query;
 
     const themeSchemeDirection = useSelector(theme_scheme_direction);
-    const playerRef = React.useRef(null);
 
     // Fetch the entire series data.
     const fetchSeriesData = async (slug: string) => {
@@ -91,27 +86,6 @@ const EpisodePage = memo(() => {
     }, [series, seasonSlug, episodeSlug]);
 
 
-    // Configure VideoJS
-    const videoJsOptions = useMemo(() => ({
-        autoplay: false,
-        controls: true,
-        responsive: true,
-        techOrder: ["youtube"],
-        sources: series ? [{
-            src: `${series.trailer}`,
-            type: "video/youtube",
-        }] : [],
-        youtube: { iv_load_policy: 1 },
-    }), [series]);
-
-
-    const handlePlayerReady = (player: any) => {
-        playerRef.current = player;
-        player.on("waiting", () => videojs.log("player is waiting"));
-        player.on("dispose", () => videojs.log("player will dispose"));
-    };
-
-    const [TrailerOn, setTrailerOn] = useState(false);
 
     const useStreamSourceMutation = () => {
         return useMutation({
@@ -124,6 +98,7 @@ const EpisodePage = memo(() => {
 
 
     useEffect(() => {
+
         if (currentEpisode && currentEpisode.video_id && currentEpisode.library_id) {
             mutate({ video_id: currentEpisode.video_id, library_id: currentEpisode.library_id }, {
                 onSuccess: (data) => {

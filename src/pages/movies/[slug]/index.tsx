@@ -563,9 +563,9 @@ const MoviesDetail = () => {
                 </Container>
             </div> */}
             <MoviesRecommendedForYou />
-            <RelatedMovies />
-            <RelatedVideos />
-            <UpcomingMovies />
+            {/* <RelatedMovies /> */}
+            {/* <RelatedVideos /> */}
+            {/* <UpcomingMovies /> */}
         </Fragment>
     );
 };
