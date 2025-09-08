@@ -26,6 +26,7 @@ import pb from "@/lib/pocketbase";
 import { MovieType } from "@/types/pb.types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatTime } from "@/helper/ms-to-hm";
+import { fetchStreamSource } from "@/helper/fetch-stream-details";
 
 // date, type
 // const shows = {
@@ -118,27 +119,7 @@ const MoviesDetail = () => {
 
 
 
-    const fetchStreamSource = async ({
-        video_id,
-        library_id,
-    }: {
-        video_id: string;
-        library_id: string;
-    }) => {
-        const response = await pb.send("/api/iframe-stream-source", {
-            method: "POST",
-            body: JSON.stringify({ video_id, library_id }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
 
-        return {
-            source: response.source,
-            token: response.token,
-            expires: response.expires,
-        };
-    };
 
     const useStreamSourceMutation = () => {
         return useMutation({
@@ -146,7 +127,6 @@ const MoviesDetail = () => {
         });
     };
 
-    const [streamToken, setStreamToken] = useState<string>("")
 
     const { mutate, data: streamSource, error: streamSourceError, isPending } = useStreamSourceMutation();
 
@@ -163,19 +143,6 @@ const MoviesDetail = () => {
             });
         }
     }, [movie]);
-
-    // // mutate in 20 seconds
-    // useEffect(() => {
-    //     const interval = setInterval(async () => {
-    //         if (movie && movie.video_id && movie.library_id) {
-    //             const response = await fetchStreamSource({ video_id: movie.video_id, library_id: movie.library_id });
-    //             setStreamToken(response.token);
-    //             console.log("Stream source refreshed:", response);
-    //         }
-    //     }, 20000);
-    //     return () => clearInterval(interval);
-    // }, [movie]);
-
 
 
     return (

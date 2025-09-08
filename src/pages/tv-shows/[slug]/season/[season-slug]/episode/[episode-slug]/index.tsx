@@ -1,9 +1,9 @@
-import React, { Fragment, memo, useMemo } from "react";
+import React, { Fragment, memo, useEffect, useMemo } from "react";
 // Import Spinner from react-bootstrap
 import { Row, Col, Container, Nav, Tab, Spinner } from "react-bootstrap";
 import Link from 'next/link';
 import { useRouter } from "next/router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Components
 import ReviewComponent from "@/components/ReviewComponent";
@@ -25,6 +25,8 @@ import { generateImgPath } from "@/StaticData/data";
 import videojs from "video.js";
 import { ClientProvider } from "@/providers/client.provider";
 import { formatTime } from "@/helper/ms-to-hm";
+import { fetchStreamSource } from "@/helper/fetch-stream-details";
+import { Episode, Season, TVShow } from "@/types/pb.types";
 
 // Helper to get correct PocketBase file URL
 const getPbImageUrl = (
@@ -36,38 +38,7 @@ const getPbImageUrl = (
 };
 
 
-// API Response Types
-type Episode = {
-    id: string;
-    collectionId: string;
-    title: string;
-    detail: string;
-    duration: number;
-    episode_no: number;
-    season_no: number;
-    thumbnail: string;
-    video_id: string; // YouTube video ID
-    created: string;
-};
 
-type Season = {
-    id: string;
-    collectionId: string;
-    season_no: number;
-    expand: {
-        episodes: Episode[];
-    };
-};
-
-type TVShow = {
-    id: string;
-    collectionId: string;
-    title: string;
-    rating: number;
-    expand: {
-        seasons: Season[];
-    };
-};
 
 const EpisodePage = memo(() => {
     useEnterExit();
@@ -126,12 +97,12 @@ const EpisodePage = memo(() => {
         controls: true,
         responsive: true,
         techOrder: ["youtube"],
-        sources: currentEpisode ? [{
-            src: `https://www.youtube.com/watch?v=${currentEpisode.video_id}`,
+        sources: series ? [{
+            src: `${series.trailer}`,
             type: "video/youtube",
         }] : [],
         youtube: { iv_load_policy: 1 },
-    }), [currentEpisode]);
+    }), [series]);
 
 
     const handlePlayerReady = (player: any) => {
@@ -139,6 +110,29 @@ const EpisodePage = memo(() => {
         player.on("waiting", () => videojs.log("player is waiting"));
         player.on("dispose", () => videojs.log("player will dispose"));
     };
+
+    const useStreamSourceMutation = () => {
+        return useMutation({
+            mutationFn: fetchStreamSource,
+        });
+    };
+
+
+    const { mutate, data: streamSource, error: streamSourceError, isPending } = useStreamSourceMutation();
+
+
+    useEffect(() => {
+        if (currentEpisode && currentEpisode.video_id && currentEpisode.library_id) {
+            mutate({ video_id: currentEpisode.video_id, library_id: currentEpisode.library_id }, {
+                onSuccess: (data) => {
+                    console.log("Stream source fetched successfully:", data);
+                },
+                onError: (error) => {
+                    console.error("Error fetching stream source:", error);
+                }
+            });
+        }
+    }, [currentEpisode]);
 
     // --- UI States ---
     if (isLoading) {
@@ -164,8 +158,22 @@ const EpisodePage = memo(() => {
                 <Container fluid>
                     <Row>
                         <Col lg="12">
-                            <div className="pt-0">
+                            {/* <div className="pt-0">
                                 <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+                            </div> */}
+
+                            <div
+                                style={{ paddingTop: '56.25%', position: 'relative' }}
+                            >
+                                {
+                                    currentEpisode?.video_id && currentEpisode.library_id && streamSource?.source && streamSource.token && streamSource.token ? <>
+                                        <iframe src={streamSource.source} loading="lazy" style={{ border: 0, position: "absolute", top: 0, height: "100%", width: "100%" }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen></iframe>
+                                    </> : <div>
+                                        <Spinner animation="border" variant="primary" role="status" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                                            <span className="visually-hidden">Loading...</span>
+                                        </Spinner>
+                                    </div>
+                                }
                             </div>
                         </Col>
                     </Row>
