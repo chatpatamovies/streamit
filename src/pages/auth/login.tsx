@@ -55,7 +55,7 @@ const Login = () => {
         });
 
         console.log("User record:", record);
-        router.replace("/home");
+        router.replace("/");
 
       }
 

@@ -42,7 +42,7 @@ const moviesData = [
       "Dinosaurs are a diverse group of reptiles of the clade Dinosauria. They first appeared during the Triassic period, between 243 and 233.23 million years ago.",
     slug: "the-elephant-dream", // For dynamic routing
     trailerUrl: "/assets/images/video/trailer.mp4", // Movie-specific trailer
-    type: "movie",
+    type: "movies",
   },
   {
     id: 2,
