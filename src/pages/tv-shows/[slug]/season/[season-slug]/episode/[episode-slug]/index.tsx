@@ -1,6 +1,6 @@
-import { Fragment, memo, useEffect, useMemo } from "react";
-// Import Spinner from react-bootstrap
-import { Row, Col, Container, Nav, Tab, Spinner } from "react-bootstrap";
+import { Fragment, memo, useEffect, useMemo, useState } from "react";
+// Import Alert and Button for better UI
+import { Row, Col, Container, Nav, Tab, Spinner, Alert, Button } from "react-bootstrap";
 import Link from 'next/link';
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ import { generateImgPath } from "@/StaticData/data";
 import { ClientProvider } from "@/providers/client.provider";
 import { formatTime } from "@/helper/ms-to-hm";
 import { fetchStreamSource } from "@/helper/fetch-stream-details";
-import { TVShow } from "@/types/pb.types";
+import { TVShow, Season, Episode } from "@/types/pb.types"; // Assuming these types are defined
 
 // Helper to get correct PocketBase file URL
 const getPbImageUrl = (
@@ -33,19 +33,16 @@ const getPbImageUrl = (
     return `${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/${record.collectionId}/${record.id}/${filename}`;
 };
 
-
-
-
 const EpisodePage = memo(() => {
     useEnterExit();
     const router = useRouter();
 
-    // Get slugs from URL
     const { slug: seriesSlug, 'season-slug': seasonSlug, 'episode-slug': episodeSlug } = router.query;
-
     const themeSchemeDirection = useSelector(theme_scheme_direction);
 
-    // Fetch the entire series data.
+    // State to manage the loading of the iframe content itself
+    const [isIframeLoading, setIsIframeLoading] = useState(true);
+
     const fetchSeriesData = async (slug: string) => {
         if (!slug) return;
         return pb.collection('tv_shows').getFirstListItem<TVShow>(`slug="${slug}"`, {
@@ -59,7 +56,6 @@ const EpisodePage = memo(() => {
         enabled: !!seriesSlug,
     });
 
-    // ** UPDATED to find the next episode **
     const { currentSeason, currentEpisode, otherEpisodes, nextEpisode } = useMemo(() => {
         const defaultState = { currentSeason: null, currentEpisode: null, otherEpisodes: [], nextEpisode: null };
         if (!series?.expand?.seasons || !seasonSlug || !episodeSlug) {
@@ -69,136 +65,158 @@ const EpisodePage = memo(() => {
         const seasonNum = parseInt(String(seasonSlug), 10);
         const episodeNum = parseInt(String(episodeSlug), 10);
 
-        const season = series.expand.seasons.find(s => s.season_no === seasonNum);
-        if (!season || !season.expand.episodes) return defaultState;
+        const season = series.expand.seasons.find((s: Season) => s.season_no === seasonNum);
+        if (!season || !season.expand?.episodes) return defaultState;
 
-        // Sort episodes just in case they are not in order
-        const sortedEpisodes = [...season.expand.episodes].sort((a, b) => a.episode_no - b.episode_no);
-
-        const currentEpisodeIndex = sortedEpisodes.findIndex(e => e.episode_no === episodeNum);
+        const sortedEpisodes = [...season.expand.episodes].sort((a: Episode, b: Episode) => a.episode_no - b.episode_no);
+        const currentEpisodeIndex = sortedEpisodes.findIndex((e: Episode) => e.episode_no === episodeNum);
         if (currentEpisodeIndex === -1) return defaultState;
 
         const episode = sortedEpisodes[currentEpisodeIndex];
-        const next = sortedEpisodes[currentEpisodeIndex + 1] || null; // Get next, or null if it's the last one
-        const others = sortedEpisodes.filter(e => e.episode_no !== episodeNum);
+        const next = sortedEpisodes[currentEpisodeIndex + 1] || null;
+        const others = sortedEpisodes.filter((e: Episode) => e.episode_no !== episodeNum);
 
         return { currentSeason: season, currentEpisode: episode, otherEpisodes: others, nextEpisode: next };
     }, [series, seasonSlug, episodeSlug]);
 
-
-
-    const useStreamSourceMutation = () => {
-        return useMutation({
-            mutationFn: fetchStreamSource,
-        });
-    };
-
-
-    const { mutate, data: streamSource, error: streamSourceError, isPending: streamLoading } = useStreamSourceMutation();
-
+    const { mutate, data: streamSource, error: streamSourceError, isPending: streamLoading } = useMutation({
+        mutationFn: fetchStreamSource,
+    });
 
     useEffect(() => {
-
         if (currentEpisode && currentEpisode.video_id && currentEpisode.library_id) {
-            mutate({ video_id: currentEpisode.video_id, library_id: currentEpisode.library_id }, {
-                onSuccess: (data) => {
-                    console.log("Stream source fetched successfully:", data);
-                },
-                onError: (error) => {
-                    console.error("Error fetching stream source:", error);
-                }
-            });
+            setIsIframeLoading(true);
+            mutate({ video_id: currentEpisode.video_id, library_id: currentEpisode.library_id });
         }
-    }, [currentEpisode]);
+    }, [currentEpisode, mutate]);
 
-    // --- UI States ---
+
     if (isLoading) {
         return (
-            <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: "100vh" }}
-            >
+            <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
                 <Spinner animation="border" variant="primary" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             </div>
         );
     }
+    
+    if (isError) {
+         return (
+            <Container className="py-5">
+                <Alert variant="danger" className="text-center">
+                    <Alert.Heading>Failed to Load Series Data</Alert.Heading>
+                    <p>We couldn't find the TV series you're looking for. It might be unavailable or the link may be incorrect.</p>
+                     <Button variant="primary" onClick={() => router.push("/tv-shows")}>
+                        Back to Shows
+                    </Button>
+                </Alert>
+            </Container>
+        );
+    }
+
     const renderStreamError = () => {
         if (!streamSourceError) return null;
 
         // @ts-ignore
         const status = streamSourceError?.status;
+        const message = streamSourceError.message || "An unexpected error occurred.";
 
         if (status === 401) {
             return (
-                <div className="text-center text-danger p-3 pt-3">
-                    <p>Your session has expired. Please log in again.</p>
-                    <button className="btn btn-primary" onClick={() => router.push("/auth/login")}>
-                        Login
-                    </button>
-                </div>
+                <Alert variant="danger" className="text-center m-0">
+                    <Alert.Heading>Session Expired</Alert.Heading>
+                    <p>Your session has expired. Please log in again to continue.</p>
+                    <Button variant="primary" onClick={() => router.push("/auth/login")}>
+                        Go to Login
+                    </Button>
+                </Alert>
             );
         } else if (status === 403) {
             return (
-                <div className="text-center p-3">
-                    <p>{streamSourceError.message || "You do not have permission to access this content."}</p>
-                    <button className="btn btn-primary" onClick={() => router.push("/extra/pricing-plan")}>
-                        Buy Plan
-                    </button>
-                </div>
+                <Alert variant="warning" className="text-center m-0">
+                    <Alert.Heading>Access Denied</Alert.Heading>
+                    <p>{message}</p>
+                    <Button variant="primary" onClick={() => router.push("/extra/pricing-plan")}>
+                        View Subscription Plans
+                    </Button>
+                </Alert>
             );
         } else {
             return (
-                <div className="text-center text-danger p-3">
-                    <p>{streamSourceError.message || "Something went wrong. Please refresh the page."}</p>
-                    <button className="btn btn-primary" onClick={() => router.reload()}>
-                        Retry
-                    </button>
-                </div>
+                <Alert variant="danger" className="text-center m-0">
+                    <Alert.Heading>Error Loading Video</Alert.Heading>
+                    <p>{message}</p>
+                    <Button variant="primary" onClick={() => router.reload()}>
+                        Retry Page
+                    </Button>
+                </Alert>
             );
         }
     };
 
-
     return (
         <Fragment>
             <div className="iq-main-slider site-video">
-                {/* ... Video Player ... */}
                 <Container fluid>
                     <Row>
                         <Col lg="12">
-                            {/* <div className="pt-0">
-                                <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
-                            </div> */}
+                            <div className="video-container" style={{ position: 'relative', paddingTop: '56.25%', background: '#000' }}>
 
-                            {streamLoading && <div style={{ padding: '20.25%' }}>
-                                <div className="d-flex justify-content-center text-primary">
-                                    <div className="spinner-border" role="status">
-                                        <span className="sr-only">Loading...</span>
+                                {/* Loader Overlay */}
+                                {(streamLoading || (isIframeLoading && !streamSourceError)) && (
+                                    <div className="d-flex justify-content-center align-items-center"
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            zIndex: 10
+                                        }}>
+                                        <Spinner animation="border" variant="primary" />
                                     </div>
-                                </div>
-                            </div>
-                            }
+                                )}
 
-                            {
-                                currentEpisode?.video_id && currentEpisode?.library_id && streamSource?.source ? <>
-                                    <div
-                                        style={{ paddingTop: '56.25%', position: 'relative' }}
-                                    >
-                                        <iframe src={streamSource.source} loading="lazy" style={{ border: 0, position: "absolute", top: 0, height: "100%", width: "100%" }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowFullScreen></iframe>
-                                    </div>
-                                </> :
-                                    <div style={{ padding: '10.25%' }}>
+                                {/* Iframe */}
+                                {streamSource?.source && !streamSourceError && (
+                                    <iframe
+                                        src={streamSource.source}
+                                        onLoad={() => setIsIframeLoading(false)}
+                                        loading="lazy"
+                                        style={{
+                                            border: 0,
+                                            position: "absolute",
+                                            top: 0,
+                                            height: "100%",
+                                            width: "100%",
+                                            opacity: isIframeLoading ? 0 : 1,
+                                            transition: 'opacity 0.3s ease-in-out'
+                                        }}
+                                        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                                        allowFullScreen
+                                    ></iframe>
+                                )}
+
+                                {/* Error Display */}
+                                {!streamLoading && streamSourceError && (
+                                    <div className="d-flex justify-content-center align-items-center p-md-5 p-3"
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%'
+                                        }}>
                                         {renderStreamError()}
                                     </div>
-                            }
+                                )}
+                            </div>
                         </Col>
                     </Row>
                 </Container>
             </div>
             <div className="details-part">
-                {/* ... Details and Tabs ... */}
                 <Container fluid>
                     <div className="trending-info mt-4 pt-0 pb-4">
                         <Row>
@@ -208,8 +226,8 @@ const EpisodePage = memo(() => {
                                         {series?.title}
                                     </h2>
                                     <div className="slider-ratting d-flex align-items-center gap-2 ms-md-3 ms-0">
-                                        {
-                                            series?.rating && <>
+                                        {series?.rating && (
+                                            <>
                                                 <RatingStar count={Math.floor(series.rating)} count1={series.rating % 1 > 0 ? 1 : 0} starColor="text-primary" />
                                                 <span className="text-white">
                                                     {series?.rating.toFixed(1)}
@@ -220,7 +238,7 @@ const EpisodePage = memo(() => {
                                                     />
                                                 </span>
                                             </>
-                                        }
+                                        )}
                                     </div>
                                 </div>
                                 <ul className="p-0 mt-2 list-inline d-flex flex-wrap movie-tag">
@@ -229,8 +247,7 @@ const EpisodePage = memo(() => {
                                     <li className="font-size-18">{formatTime(currentEpisode?.duration || 0)}</li>
                                 </ul>
                             </Col>
-                            {
-                                series?.trailer && series.trailer.length > 0 &&
+                            {series?.trailer && series.trailer.length > 0 &&
                                 <FsLightBox sources={[series.trailer]} image={getPbImageUrl(series, series?.thumbnail)} />
                             }
                         </Row>
@@ -241,30 +258,17 @@ const EpisodePage = memo(() => {
                                 <Nav.Item>
                                     <Nav.Link eventKey="first">Description</Nav.Link>
                                 </Nav.Item>
-                                {/* <Nav.Item>
-                                    <Nav.Link eventKey="second">Rate & Review</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
-                                    <Nav.Link eventKey="third">Sources</Nav.Link>
-                                </Nav.Item> */}
                             </Nav>
                             <Tab.Content>
                                 <Tab.Pane className=" fade show" eventKey="first">
                                     <p>{currentEpisode?.detail}</p>
                                 </Tab.Pane>
-                                {/* <Tab.Pane className=" fade" eventKey="second">
-                                    <ReviewComponent />
-                                </Tab.Pane>
-                                <Tab.Pane className=" fade" eventKey="third">
-                                    <Sources />
-                                </Tab.Pane> */}
                             </Tab.Content>
                         </Tab.Container>
                     </div>
                 </Container>
             </div>
 
-            {/* ** THIS IS THE NEW "NEXT EPISODE" SECTION ** */}
             {nextEpisode && (
                 <div className="next-episode-block">
                     <Container fluid>
@@ -323,7 +327,6 @@ const EpisodePage = memo(() => {
                             </h5>
                         </div>
                         <div className="card-style-slider">
-                            {/* ... Swiper for other episodes ... */}
                             <Swiper
                                 key={String(themeSchemeDirection)}
                                 dir={String(themeSchemeDirection)}
@@ -342,7 +345,7 @@ const EpisodePage = memo(() => {
                                     1025: { slidesPerView: 4, spaceBetween: 20, },
                                 }}
                             >
-                                {otherEpisodes.map((item, index) => (
+                                {otherEpisodes.map((item: Episode, index: number) => (
                                     <SwiperSlide key={index}>
                                         <div className="episode-block">
                                             <div className="block-image position-relative">
