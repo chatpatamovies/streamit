@@ -72,7 +72,7 @@ const Login = () => {
   return (
     <Fragment>
       <main className='main-content'>
-        <div className='vh-100' style={{ backgroundImage: "url(/assets/images/pages/01.webp)", backgroundSize: 'cover', backgroundRepeat: "no-repeat", position: 'relative', minHeight: '500px' }}>
+        <div className='vh-100' style={{ backgroundImage: "url(/assets/images/uploads/andheri_raat_1080_1920.jpg)", backgroundSize: 'cover', backgroundRepeat: "no-repeat", position: 'relative', minHeight: '500px' }}>
           <Container>
             <Row className='justify-content-center align-items-center height-self-center vh-100'>
               <Col lg="5" md="12" className='align-self-center'>

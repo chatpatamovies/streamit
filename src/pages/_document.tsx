@@ -10,7 +10,7 @@ export default function Document() {
       <meta />
       <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>ChatpataMovies - Responsive Bootstrap 5 Admin Dashboard Template</title>
+      <title>ChatpataMovies - Your one stop solution for desi content</title>
       <link rel="stylesheet" href="/vendor/font-awesome/css/all.min.css" />
       <link rel="stylesheet" href="/vendor/iconly/css/style.css" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />

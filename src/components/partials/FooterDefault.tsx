@@ -50,23 +50,23 @@ const FooterMega = memo(() => {
                   <div className="footer-logo">
                     <Logo></Logo>
                   </div>
-                  <p className="mb-4 font-size-14">
+                  {/* <p className="mb-4 font-size-14">
                     Email us:{" "}
                     <span className="text-white">customer@chatpatamovies.com</span>
-                  </p>
+                  </p> */}
                   <p className="text-uppercase letter-spacing-1 font-size-14 mb-1">
                     customer services
                   </p>
-                  <p className="mb-0 contact text-white">Available Soon</p>
+                  <p className="mb-0 contact text-white">customer@chatpatamovies.com</p>
                 </Col>
                 <Col xl={2} lg={6} className="mb-5 mb-lg-0">
                   <h4 className="footer-link-title">Quick Links</h4>
                   <ul className="list-unstyled footer-menu">
-                    <li className="mb-3">
+                    {/* <li className="mb-3">
                       <Link href="/extra/about-us" className="ms-3">
                         about us
                       </Link>
-                    </li>
+                    </li> */}
                     {/* <li className="mb-3">
                       <Link href="/blogs" className="ms-3">
                         Blog
@@ -193,11 +193,11 @@ const FooterMega = memo(() => {
                       <Link href="/extra/terms-of-use"> Terms Of Use </Link>
                     </li>
                     <li id="menu-item-7316" className="menu-item">
-                      <Link href="/privacy-policy"> Privacy-Policy </Link>
+                      <Link href="/privacy-policy"> Privacy Policy </Link>
                     </li>
-                    <li className="menu-item">
+                    {/* <li className="menu-item">
                       <Link href="/faq"> FAQ </Link>
-                    </li>
+                    </li> */}
                     <li className="menu-item">
                       <Link href="/play-list"> Watch List </Link>
                     </li>

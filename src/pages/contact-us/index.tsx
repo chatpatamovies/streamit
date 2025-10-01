@@ -81,16 +81,16 @@ const ContactPage = memo(() => {
             </Col>
             <Col lg="1" className="d-none d-lg-block"></Col>
             <Col lg="3">
-              <div className="border-bottom pb-4 mb-4">
+              {/* <div className="border-bottom pb-4 mb-4">
                 <h5>Come See Us</h5>
                 <span>
                  Uttarpradesh, India
                 </span>
-              </div>
+              </div> */}
               <div className="border-bottom pb-4 mb-4">
                 <h5>Get In Touch</h5>
                 <Link href="" className="text-primary">support@chatpatamovies.com</Link>
-                <p className="mb-0">available soon</p>
+                {/* <p className="mb-0">available soon</p> */}
               </div>
               <div>
                 <h5>Follow Us</h5>
@@ -130,7 +130,7 @@ const ContactPage = memo(() => {
           </Row>
         </Container>
       </div>
-      <div className="map">
+      {/* <div className="map">
         <Container fluid className="p-0">
           <iframe
             loading="lazy"
@@ -139,7 +139,7 @@ const ContactPage = memo(() => {
             height="600"
           ></iframe>
         </Container>
-      </div>
+      </div> */}
       <div className="section-padding">
         <Container>
           <Row className="row">
@@ -150,7 +150,7 @@ const ContactPage = memo(() => {
             </Col>
             <Col lg="2" className="d-none d-lg-block"></Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col lg="4" md="6">
               <div className="contact-box d-flex gap-3 rounded mb-3 mb-lg-0">
                 <Image src="/assets/images/pages/box-pattern.webp" width={50} height={30} className="img-fluid position-absolute top-0 end-0" alt="pattern" />
@@ -203,7 +203,7 @@ const ContactPage = memo(() => {
                 </div>
               </div>
             </Col>
-          </Row>
+          </Row> */}
         </Container>
       </div>
     </Fragment>
