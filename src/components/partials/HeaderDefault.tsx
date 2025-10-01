@@ -1197,7 +1197,7 @@ const HeaderDefault = memo((
                           </li>
                           <li>
                             <Link
-                              href={{}}
+                              href={"/"}
                               onClick={onLogout}
                               className="iq-sub-card iq-logout-2 mt-1 d-flex justify-content-center gap-2"
                             >
