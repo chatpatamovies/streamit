@@ -12,8 +12,10 @@ export const config = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+        return res.status(200).json({ error: 'Method not allowed' });
     }
+
+
 
     try {
         // Get raw body and signature from header
@@ -77,6 +79,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     } catch (error) {
         console.error('Webhook error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(200).json({ error: 'Internal server error' });
     }
 }
