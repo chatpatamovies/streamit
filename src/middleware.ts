@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import PocketBase from 'pocketbase';
 
 // Initialize PocketBase client
-const pb = new PocketBase(process.env.POCKETBASE_URL);
+const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
