@@ -10,7 +10,7 @@ interface TagCardProps{
 const TagsCard = memo((props:TagCardProps) => {
   return (
     <Fragment>
-      <Link href="/view-all">
+      <Link href="#">
         <span className="iq-tag-box">{props.title}</span>
       </Link>
     </Fragment>

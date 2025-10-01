@@ -67,38 +67,38 @@ const FooterMega = memo(() => {
                         about us
                       </Link>
                     </li>
-                    <li className="mb-3">
+                    {/* <li className="mb-3">
                       <Link href="/blogs" className="ms-3">
                         Blog
                       </Link>
-                    </li>
+                    </li> */}
                     <li className="mb-3">
                       <Link href="/extra/pricing-plan" className="ms-3">
-                        Pricing Plan
+                        Pricing
                       </Link>
                     </li>
-                    <li>
+                    {/* <li>
                       <Link href="/extra/faq" className="ms-3">
                         FAQ
                       </Link>
-                    </li>
+                    </li> */}
                   </ul>
                 </Col>
                 <Col xl={2} lg={6} className="mb-5 mb-lg-0">
                   <h4 className="footer-link-title">Movies to watch</h4>
                   <ul className="list-unstyled footer-menu">
                     <li className="mb-3">
-                      <Link href="/view-all" className="ms-3">
+                      <Link href="#" className="ms-3">
                         Top trending
                       </Link>
                     </li>
                     <li className="mb-3">
-                      <Link href="/view-all" className="ms-3">
+                      <Link href="#" className="ms-3">
                         Recommended
                       </Link>
                     </li>
                     <li>
-                      <Link href="/view-all" className="ms-3">
+                      <Link href="#" className="ms-3">
                         Popular
                       </Link>
                     </li>

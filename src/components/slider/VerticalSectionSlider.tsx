@@ -130,7 +130,7 @@ const VerticalSectionSlider: FC<VerticalSectionSliderProps> = memo(({sliderData}
                         <ul className="ps-0 mb-0 mb-1 pb-1 list-inline d-flex flex-wrap align-items-center movie-tag">
                           <li className="position-relative text-capitalize font-size-14 letter-spacing-1">
                             <Link
-                              href="/view-all"
+                              href="#"
                               className="text-white text-decoration-none"
                             >
                               Comedy
@@ -138,7 +138,7 @@ const VerticalSectionSlider: FC<VerticalSectionSliderProps> = memo(({sliderData}
                           </li>
                           <li className="position-relative text-capitalize font-size-14 letter-spacing-1">
                             <Link
-                              href="/view-all"
+                              href="#"
                               className="text-white text-decoration-none"
                             >
                               Romance
@@ -146,7 +146,7 @@ const VerticalSectionSlider: FC<VerticalSectionSliderProps> = memo(({sliderData}
                           </li>
                           <li className="position-relative text-capitalize font-size-14 letter-spacing-1">
                             <Link
-                              href="/view-all"
+                              href="#"
                               className="text-white text-decoration-none"
                             >
                               Action

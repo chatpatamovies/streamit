@@ -146,7 +146,7 @@ const RelatedPage = memo(() => {
                         return (
                           <li key={index} className="trending-list">
                             <Link
-                              href="/view-all"
+                              href="#"
                               className="text-primary text-capitalize"
                             >
                               {item}
@@ -234,7 +234,7 @@ const RelatedPage = memo(() => {
                       {shows.tags.map((item, index) => {
                         return (
                           <li key={index}>
-                            <Link href="/view-all" className="title text-capitalize">
+                            <Link href="#" className="title text-capitalize">
                               {item}
                             </Link>
                             <span className="text-secondary">,</span>

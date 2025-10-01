@@ -140,7 +140,7 @@ const OttHeroSlider = () => {
                                 <ul className="p-0 mb-0 list-inline d-flex flex-wrap align-items-center movie-tag">
                                   <li className="position-relative text-capitalize font-size-14 letter-spacing-1">
                                     <Link
-                                      href="/view-all"
+                                      href="#"
                                       className="text-decoration-none"
                                     >
                                       Adventure
@@ -148,7 +148,7 @@ const OttHeroSlider = () => {
                                   </li>
                                   <li className="position-relative text-capitalize font-size-14 letter-spacing-1">
                                     <Link
-                                      href="/view-all"
+                                      href="#"
                                       className="text-decoration-none"
                                     >
                                       Thriller
@@ -156,7 +156,7 @@ const OttHeroSlider = () => {
                                   </li>
                                   <li className="position-relative text-capitalize font-size-14 letter-spacing-1">
                                     <Link
-                                      href="/view-all"
+                                      href="#"
                                       className="text-decoration-none"
                                     >
                                       Drama
@@ -200,7 +200,7 @@ const OttHeroSlider = () => {
                                 <div className="text-primary font-size-14 fw-500 text-capitalize">
                                   genres:{" "}
                                   <Link
-                                    href="/view-all"
+                                    href="#"
                                     className="text-decoration-none ms-1"
                                   >
                                     Drama

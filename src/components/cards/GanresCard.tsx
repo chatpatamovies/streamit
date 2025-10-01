@@ -25,7 +25,7 @@ const GenersCard = memo((props:GenersCardProps) => {
             <h6 className="mb-0 iq-title">
               <Link
                 href={{
-                  pathname: "/view-all",
+                  pathname: "#",
                 }}
                 className="text-decoration-none text-capitalize line-count-2 p-2"
               >

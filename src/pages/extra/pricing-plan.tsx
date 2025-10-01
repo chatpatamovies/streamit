@@ -25,7 +25,7 @@ interface User {
 }
 
 const PricingPage = () => {
-  useBreadcrumb("Pricing Plan");
+  useBreadcrumb("Pricing");
   const router = useRouter();
 
   const [plans, setPlans] = useState<Plan[]>([]);

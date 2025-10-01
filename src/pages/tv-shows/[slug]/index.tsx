@@ -1,23 +1,23 @@
 import React, { Fragment, memo, useEffect, useState } from "react";
 
-//react-bootstrap
-import { Row, Col, Container, Nav, Tab, Form } from "react-bootstrap";
+// react-bootstrap: Added Spinner and Alert for better UI feedback
+import { Row, Col, Container, Nav, Tab, Form, Spinner, Alert } from "react-bootstrap";
 
 // Next-Link
 import Link from 'next/link'
 
-//components
+// components
 import ReviewComponent from "@/components/ReviewComponent";
 import { Swiper, SwiperSlide } from "swiper/react";
 import RatingStar from "@/components/rating-star";
 
-//function
+// function
 import { generateImgPath } from "@/StaticData/data"; // Assuming this is a local utility
 
-//utilities
+// utilities
 import { useEnterExit } from "@/utilities/usePage";
 
-//swiper
+// swiper
 import { Navigation } from "swiper";
 import pb from "@/lib/pocketbase";
 import { ClientProvider } from "@/providers/client.provider";
@@ -37,7 +37,6 @@ const getPbImageUrl = (
 
 
 const ShowsDetailPage = () => {
-
     const router = useRouter();
     const { slug } = router.query;
 
@@ -49,7 +48,6 @@ const ShowsDetailPage = () => {
     const getSeries = async (slug: string) => {
         if (!slug) return;
         try {
-            // Use the correct type `TVShow` for a single record
             const response = await pb.collection('tv_shows').getFirstListItem<TVShow>(`slug="${slug}"`, {
                 expand: "seasons,seasons.episodes"
             });
@@ -61,26 +59,68 @@ const ShowsDetailPage = () => {
     };
 
     const {
-        data: show, // Renamed to `show` for clarity
+        data: show,
         isLoading,
         isError,
     } = useQuery({
         queryKey: ["series", slug],
         queryFn: () => getSeries(String(slug)),
-        enabled: !!slug, // Query runs only when slug is available
+        enabled: !!slug,
     });
 
     // Effect to set the initial season once data is loaded
     useEffect(() => {
         if (show && show?.expand?.seasons?.length > 0) {
+            // Set the default selected season to the first one
             setSelectedSeason(show.expand.seasons[0]);
         }
     }, [show]);
 
-    // Handle loading and error states
-    if (isLoading) return <div>Loading...</div>;
-    if (isError) return <div>Error fetching data. Please try again.</div>;
-    if (!show) return <div>Show not found.</div>;
+    // =================================================================
+    // ENHANCED LOADING STATE: Use a centered Bootstrap spinner
+    // =================================================================
+    if (isLoading) {
+        return (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <Spinner animation="border" variant="primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </div>
+        );
+    }
+
+    // =================================================================
+    // ENHANCED ERROR STATE: Use a Bootstrap Alert for clear feedback
+    // =================================================================
+    if (isError) {
+        return (
+            <Container className="py-5">
+                <Alert variant="danger" className="text-center">
+                    <Alert.Heading>Oops! Something went wrong.</Alert.Heading>
+                    <p>
+                        We couldn't load the show details. Please check your internet connection and try again later.
+                    </p>
+                </Alert>
+            </Container>
+        );
+    }
+    
+    // =================================================================
+    // NOT FOUND STATE: Handle cases where the show doesn't exist
+    // =================================================================
+    if (!show) {
+        return (
+             <Container className="py-5">
+                <Alert variant="warning" className="text-center">
+                    <Alert.Heading>Show Not Found</Alert.Heading>
+                    <p>
+                        Sorry, we couldn't find the show you're looking for. It might have been removed or the link is incorrect.
+                    </p>
+                    <Link href="/tv-shows" className="btn btn-primary">Go to Shows</Link>
+                </Alert>
+            </Container>
+        );
+    }
 
     const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const seasonId = e.target.value;
@@ -90,10 +130,10 @@ const ShowsDetailPage = () => {
 
     const episodesToDisplay = selectedSeason?.expand?.episodes || [];
 
-
     return (
         <Fragment>
             <div className="tv-show-detail">
+                {/* ... (rest of your component JSX remains unchanged) ... */}
                 <Container fluid>
                     <div
                         className="overlay-wrapper iq-main-slider "
@@ -158,7 +198,6 @@ const ShowsDetailPage = () => {
                                         <Link href={`/tv-shows/${show.slug}`} className="title text-capitalize">
                                             {item.trim()}
                                         </Link>
-                                        {/* Don't add comma for the last item */}
                                         {index < show.tags.split(',').length - 1 && <span className="text-secondary">,</span>}
                                     </li>
                                 ))}
@@ -189,9 +228,6 @@ const ShowsDetailPage = () => {
                                 <Nav.Item>
                                     <Nav.Link eventKey="second">Description</Nav.Link>
                                 </Nav.Item>
-                                {/* <Nav.Item>
-                                    <Nav.Link eventKey="third">Rate & Review</Nav.Link>
-                                </Nav.Item> */}
                             </Nav>
                             <Tab.Content>
                                 <Tab.Pane className=" fade show" eventKey="first">
@@ -248,16 +284,11 @@ const ShowsDetailPage = () => {
                                 <Tab.Pane className=" fade" eventKey="second">
                                     <p>{show.detail}</p>
                                 </Tab.Pane>
-                                {/* <Tab.Pane className=" fade" eventKey="third">
-                                    <ReviewComponent />
-                                </Tab.Pane> */}
                             </Tab.Content>
                         </Tab.Container>
                     </div>
                 </Container>
             </div>
-            {/* Cast & Crew Section Removed as it's not in the API response type */}
-            {/* If you have cast/crew data, you can add this section back and populate it similarly */}
         </Fragment>
     );
 };

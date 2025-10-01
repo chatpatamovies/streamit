@@ -453,7 +453,7 @@ const HeaderDefault = memo((
                                 } nav-link`}
                             >
                               {" "}
-                              Pricing Plan{" "}
+                              Pricing{" "}
                             </Link>
                           </Nav.Item>
                           {/* <Nav.Item as="li">

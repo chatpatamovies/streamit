@@ -289,7 +289,7 @@ const HeaderMerchandise = memo(() => {
                                 <Link href="/privacy-policy" className="nav-link"> Privacy Policy </Link>
                               </Nav.Item>
                               <Nav.Item as="li">
-                                <Link href="/extra/pricing-plan" className="nav-link"> Pricing Plan </Link>
+                                <Link href="/extra/pricing-plan" className="nav-link"> Pricing </Link>
                               </Nav.Item>
                               <Nav.Item as="li">
                                 <Link href="/extra/coming-soon" className="nav-link"> Coming Soon </Link>

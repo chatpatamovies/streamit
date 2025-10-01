@@ -227,7 +227,7 @@ const HomeTrendingslider = () => {
                                             Genres:
                                             {item.geners.map((item:any, index:any) => {
                                               return (
-                                                <Link className='text-capitalize ms-2' key={index} href="/view-all">{item},</Link>
+                                                <Link className='text-capitalize ms-2' key={index} href="#">{item},</Link>
                                               )
                                             })}
                                           </div>

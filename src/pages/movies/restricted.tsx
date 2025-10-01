@@ -125,7 +125,7 @@ const RestrictedPage = memo(() => {
                         return (
                           <li key={index} className="trending-list">
                             <Link
-                              href="/view-all"
+                              href="#"
                               className="text-primary text-capitalize"
                             >
                               {item}
@@ -214,7 +214,7 @@ const RestrictedPage = memo(() => {
                         return (
                           <li key={index}>
                             <Link
-                              href="/view-all"
+                              href="#"
                               className="title text-capitalize"
                             >
                               {item}

@@ -295,7 +295,7 @@ const MoviesDetail = () => {
                                                 return (
                                                     <li key={index}>
                                                         <Link
-                                                            href="/view-all"
+                                                            href="#"
                                                             className="title text-capitalize"
                                                         >
                                                             {item}

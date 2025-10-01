@@ -153,8 +153,7 @@ const MovieHeroSlider = memo(() => {
                             </Link>
                           </div>
                         </Col>
-                        <Col lg="5" md="12" className="trailor-video iq-slider d-none d-lg-block">
-                          {/* 4. --- DYNAMIC TRAILER HANDLER --- */}
+                        {/* <Col lg="5" md="12" className="trailor-video iq-slider d-none d-lg-block">
                           <div onClick={() => handleTrailerClick(movie.trailerUrl)} className="video-open playbtn" style={{ cursor: 'pointer' }}>
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 213.7 213.7" enableBackground="new 0 0 213.7 213.7" xmlSpace="preserve">
                               <polygon className="triangle" fill="none" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" strokeMiterlimit="10" points="73.5,62.5 148.5,105.8 73.5,149.1 "></polygon>
@@ -162,7 +161,7 @@ const MovieHeroSlider = memo(() => {
                             </svg>
                             <span className="w-trailor text-uppercase">Watch Trailer</span>
                           </div>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </div>
                   </SwiperSlide>

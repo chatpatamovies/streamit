@@ -92,7 +92,7 @@ const HomeHeroSlider = memo(() => {
                     <div className="text-primary genres fw-500">
                       Genres:
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
@@ -102,21 +102,21 @@ const HomeHeroSlider = memo(() => {
                     <div className="text-primary tag fw-500">
                       Tag:
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
                         Action,{" "}
                       </Link>
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
                         Adventure,{" "}
                       </Link>
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
@@ -244,7 +244,7 @@ const HomeHeroSlider = memo(() => {
                     <div className="text-primary genres fw-500">
                       Genres:
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
@@ -254,21 +254,21 @@ const HomeHeroSlider = memo(() => {
                     <div className="text-primary tag fw-500">
                       Tag:
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
                         Action,{" "}
                       </Link>
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
                         Adventure,{" "}
                       </Link>
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
@@ -397,7 +397,7 @@ const HomeHeroSlider = memo(() => {
                     <div className="text-primary genres fw-500">
                       Genres:
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
@@ -407,21 +407,21 @@ const HomeHeroSlider = memo(() => {
                     <div className="text-primary tag fw-500">
                       Tag:
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
                         Action,{" "}
                       </Link>
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
                         Adventure,{" "}
                       </Link>
                       <Link
-                        href="/view-all"
+                        href="#"
                         className="fw-normal text-white text-decoration-none ms-2"
                       >
                         {" "}
