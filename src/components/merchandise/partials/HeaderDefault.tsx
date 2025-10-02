@@ -493,7 +493,7 @@ const HeaderMerchandise = memo(() => {
                             <div className="iq-card shadow-none m-0">
                               <div className="iq-card-body p-0 ps-3 pe-3">
                                 <Link
-                                  href="/auth/login"
+                                  href="/"
                                   className="iq-sub-card setting-dropdown"
                                 >
                                   <div className="d-flex align-items-center">

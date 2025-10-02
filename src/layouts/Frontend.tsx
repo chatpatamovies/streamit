@@ -56,7 +56,7 @@ const Frontend = (({ children }: any) => {
         }
           onLogout={() => {
             pb.authStore.clear();
-            router.push("/auth/login");
+            router.push("/");
           }
           }
         />

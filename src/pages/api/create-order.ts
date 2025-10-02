@@ -39,7 +39,7 @@ export default async function handler(
         return res.status(400).json({ error: 'Invalid plan_id' });
     }
 
-    const amount = getPlan.actual_price || getPlan.price;
+    const amount =  getPlan.price || getPlan.actual_price ;
 
     // Razorpay expects the amount in the smallest currency unit (e.g., paise for INR)
     // So, we multiply the amount in rupees by 100.

@@ -621,14 +621,13 @@ const PricingPage = () => {
                   )}
                   <div className="plan-header">
                     <h4 className="plan-name">{plan.name}</h4>
-                    <span className="sale-price text-decoration-line-through">₹{plan.price}</span>
                     <div className="price-container">
                       {plan.actual_price && plan.actual_price > plan.price && (
                         <span className="sale-price">₹{plan.actual_price}</span>
                       )}
                       <div>
                         <span className="currency">₹</span>
-                        <span className="main-price">{plan.actual_price || plan.price}</span>
+                        <span className="main-price">{plan.price || plan.actual_price}</span>
 
                       </div>
                       <div className="period">{plan.detail}</div>

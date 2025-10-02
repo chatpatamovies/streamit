@@ -446,7 +446,10 @@ const EpisodePage = memo(() => {
         return (
             <Alert variant="danger" className="text-center m-0">
                 <Alert.Heading>Sorry! 😢</Alert.Heading>
-                <p>{message}</p>
+                {
+                    process.env.NODE_ENV === "development" && <p>{message}</p> 
+                }
+                
                 <Button variant="primary" onClick={() => router.reload()}>
                     Play
                 </Button>
