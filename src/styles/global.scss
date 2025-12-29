@@ -84,60 +84,88 @@
 }
 
 /* This container will hold the buttons and stick to the bottom of the viewport */
+/* This container will hold the buttons and stick to the bottom of the viewport */
 .floating-buttons-container {
     position: fixed;
-    /* This is the key to making it "stick" */
-    bottom: 0;
+    bottom: 20px;
     left: 0;
     width: 100%;
-    padding: 1rem;
-    /* Adds some space from the screen edges (e.g., 16px) */
-    box-sizing: border-box;
-    /* Ensures padding is included in the width */
-
-    /* Use flexbox to position the buttons */
+    padding: 0 30px;
     display: flex;
     justify-content: space-between;
-    /* Pushes children to opposite ends */
     align-items: center;
-
-    /* Make sure it's on top of other content */
-    z-index: 1000;
-
-    /* This is important! It allows you to click "through" the empty container space */
+    z-index: 10000; /* Ensure it's above everything */
     pointer-events: none;
 }
 
 /* Base styles for both buttons */
 .floating-button {
-    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
     border: none;
     border-radius: 50px;
-    /* Pill shape */
-    font-size: 1rem;
-    font-weight: bold;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     color: white;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    // opacity: 0.7;
-    /* Re-enable clicks only on the buttons themselves */
+    text-decoration: none; /* For the Link */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     pointer-events: auto;
+    overflow: hidden;
+    position: relative;
+    
+    /* Ensure icon is sized well */
+    i {
+        font-size: 1.1em;
+    }
 }
 
 .floating-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Specific styles for each button */
+.floating-button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific styles for Subscribe button */
 .subscribe-btn {
-    background-color: #e50914;
-    /* A nice red color */
+    background: linear-gradient(135deg, #E50914 0%, #B20710 100%);
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
 }
 
-.support-btn {
-    background-color: #039826;
-    /* A standard blue color */
+.subscribe-btn:hover {
+    background: linear-gradient(135deg, #ff1f2a 0%, #d40813 100%);
+    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.6);
+}
 
+/* Specific styles for Support button */
+.support-btn {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); /* WhatsApp-ish green */
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+.support-btn:hover {
+    background: linear-gradient(135deg, #34e678 0%, #16a08f 100%);
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+}
+
+/* Mobile adjustments if needed */
+@media (max-width: 768px) {
+    .floating-buttons-container {
+        padding: 0 20px;
+        bottom: 15px;
+    }
+    
+    .floating-button {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
 }

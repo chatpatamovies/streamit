@@ -28,10 +28,12 @@ const Movies = memo(() => {
             {/* The new floating buttons container */}
             <div className="floating-buttons-container">
                 <Link href={"/extra/pricing-plan"} className="floating-button subscribe-btn">
-                    Subscribe
+                    <i className="fa-solid fa-crown"></i>
+                    <span>Subscribe</span>
                 </Link>
                 <button className="floating-button support-btn">
-                    Support Chat
+                    <i className="fa-solid fa-headset"></i>
+                    <span>Support Chat</span>
                 </button>
             </div>
         </>

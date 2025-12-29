@@ -3,7 +3,8 @@
 
   .top {
     z-index: 999;
-    bottom: 1.875em;
+    bottom: 6rem;
+    /* Raised to avoid overlap with Support Chat button */
     right: 1.5625em;
     width: 3.125em;
     height: 3.125em;
