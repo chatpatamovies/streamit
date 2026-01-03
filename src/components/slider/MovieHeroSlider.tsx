@@ -20,39 +20,35 @@ import { Navigation } from "swiper";
 import { useSelector } from "react-redux";
 import { theme_scheme_direction } from "../../store/setting/selectors";
 
-// img (These would likely come from your API in a real scenario)
-import arimg from "../../../public/assets/images/uploads/andheri_raat_1080_1920.jpg"
-// import pb from "@/lib/pocketbase";
+import tharkisarapanch from "../../../public/assets/images/tv-show/tharki-sarapanch/tharkisarapanchbanner.jpg"
 
-// 1. --- DYNAMIC DATA SOURCE (JSON Array) ---
-// This array simulates the data you would fetch from your API.
 
 type SliderDataType = {
-  id:number,
-  title:string,
-  image:StaticImageData,
-  rating:number,
-  mpaRating:string,
-  duration:string,
-  releaseDate:string,
-  description:string,
-  slug:string,
-  trailerUrl:string,
+  id: number,
+  title: string,
+  image: StaticImageData,
+  rating: number,
+  mpaRating: string,
+  duration: string,
+  releaseDate: string,
+  description: string,
+  slug: string,
+  trailerUrl: string,
   type: "movies" | "tv-shows"
 }
 
-const SliderData:SliderDataType[] = [
+const SliderData: SliderDataType[] = [
   {
     id: 1,
-    title: "Andheri Raat",
+    title: "Tharki Sarapanch",
     // image: `${pb.baseURL}/api/files/pbc_4044198014/l52yqqiqa92pfi5/maxresdefault_twnxeov35q.jpg`,
-    image: arimg,
+    image: tharkisarapanch,
     rating: 3.5,
     mpaRating: "PG",
     duration: "1hr : 44mins",
     releaseDate: "Feb 2018",
-    description:"A single night can change everything. Amidst the shadows of a city that never sleeps, a story of secrets, betrayal, and unexpected twists unfolds under the veil of the Andheri Raat.",
-    slug: "andheri-raat", // For dynamic routing
+    description: "A single night can change everything. Amidst the shadows of a city that never sleeps, a story of secrets, betrayal, and unexpected twists unfolds under the veil of the Andheri Raat.",
+    slug: "tharki-sarapanch", // For dynamic routing
     trailerUrl: "/assets/images/video/trailer.mp4", // Movie-specific trailer
     type: "tv-shows",
   }
