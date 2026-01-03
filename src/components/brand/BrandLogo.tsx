@@ -10,8 +10,10 @@ const BrandLogo = memo(() => {
       <div className="logo-default">
         <Link className="navbar-brand text-primary" href="/">
           <img
-            className="img-fluid logo"
-            src="/assets/images/logo.webp"
+            width={160}
+            height={67}
+            // className="img-fluid logo"
+            src="/assets/images/chatpata.png"
             loading="lazy"
             alt="streamit"
           />
