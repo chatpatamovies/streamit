@@ -96,7 +96,7 @@ const MovieHeroSlider = memo(() => {
                       <Row className="align-items-center h-100">
                         <Col lg="7" md="12">
                           <h1
-                            className="texture-text big-font letter-spacing-1 line-count-1 text-uppercase RightAnimate-two"
+                            className="texture-text big-font letter-spacing-1 text-uppercase RightAnimate-two"
                             data-animation-in="fadeInLeft"
                             data-delay-in="0.6"
                           >
