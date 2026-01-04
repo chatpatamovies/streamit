@@ -494,9 +494,11 @@ const EpisodePage = memo(() => {
                 <Container fluid className="p-0">
                     <Row className="m-0">
                         <Col lg="12" className="p-0 position-relative">
-                            <div style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 1000 }}>
-                                <Link href={`/tv-shows/${seriesSlug}`} className="btn btn-primary rounded-circle p-0 d-flex align-items-center justify-content-center" style={{ width: '45px', height: '45px', boxShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>
+                            {/* Back Button Bar */}
+                            <div className="d-flex align-items-center p-3" style={{ background: '#141414', borderBottom: '1px solid #222' }}>
+                                <Link href={`/tv-shows/${seriesSlug}`} className="text-decoration-none d-flex align-items-center text-white gap-2">
                                     <i className="fa-solid fa-arrow-left font-size-18"></i>
+                                    <span className="font-size-16 fw-500">Back to Show</span>
                                 </Link>
                             </div>
 
