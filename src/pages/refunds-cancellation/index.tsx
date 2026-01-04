@@ -37,18 +37,18 @@ const RefundPolicy = memo(() => {
               <li className="mb-2">
                 If the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within the same day of receiving the product.
               </li>
-               <li className="mb-2">
+              <li className="mb-2">
                 For products with manufacturer warranty, please refer the issue directly to them.
               </li>
             </ul>
           </div>
-           <div className="title-box">
+          <div className="title-box">
             <h5 className="mb-3">Refund Processing</h5>
             <p>
               In case of any Refunds approved by CHATPATAMOVIES, it'll take&nbsp;<strong>9-15 Days</strong>&nbsp;for the refund to be processed to the end customer.
             </p>
-             <p className="mb-0">
-              For any queries regarding our cancellation and refund policy, please contact our customer service team.
+            <p className="mb-0">
+              For any queries regarding our cancellation and refund policy, please contact our customer service team at <strong>Uttar Pradesh, Gorakhpur pincode - 273001</strong>.
             </p>
           </div>
         </Container>

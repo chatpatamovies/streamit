@@ -66,6 +66,9 @@ const TermsofUse = memo(() => {
               <li>
                 All concerns or communications relating to these Terms must be communicated to us using the contact information provided on this website.
               </li>
+              <li>
+                <strong>Registered Address:</strong> Uttar Pradesh, Gorakhpur pincode - 273001
+              </li>
             </ul>
           </div>
         </Container>

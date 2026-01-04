@@ -81,12 +81,12 @@ const ContactPage = memo(() => {
             </Col>
             <Col lg="1" className="d-none d-lg-block"></Col>
             <Col lg="3">
-              {/* <div className="border-bottom pb-4 mb-4">
+              <div className="border-bottom pb-4 mb-4">
                 <h5>Come See Us</h5>
                 <span>
-                 Uttarpradesh, India
+                  Uttar Pradesh, Gorakhpur pincode - 273001
                 </span>
-              </div> */}
+              </div>
               <div className="border-bottom pb-4 mb-4">
                 <h5>Get In Touch</h5>
                 <Link href="" className="text-primary">chatpatamoviehandle.in@gmail.com</Link>

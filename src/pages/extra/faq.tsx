@@ -17,9 +17,8 @@ const FAQPage = memo(() => {
             <Col lg="12" sm="12">
               <div className="iq-accordian iq-accordian-square">
                 <div
-                  className={`iq-accordian-block ${
-                    faq === "1" ? "iq-active" : ""
-                  }`}
+                  className={`iq-accordian-block ${faq === "1" ? "iq-active" : ""
+                    }`}
                   onClick={() => {
                     setfaq("1");
                   }}
@@ -34,26 +33,18 @@ const FAQPage = memo(() => {
                     </h4>
                   </div>
                   <div
-                    className={`iq-accordian-details ${
-                      faq === "1" ? "d-block" : "d-none"
-                    }`}
+                    className={`iq-accordian-details ${faq === "1" ? "d-block" : "d-none"
+                      }`}
                   >
                     <p className="mb-0">
-                      {" "}
-                      It is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal distribution of letters, as
-                      opposed to using ‘Content here, content here’, making it
-                      look like readable English.{" "}
+                      ChatpataMovies is a premier streaming service offering a vast library of movies, TV shows, and exclusive originals. We provide high-quality entertainment curated for every mood, from blockbuster hits to hidden gems.
                     </p>
                   </div>
                 </div>
 
                 <div
-                  className={`iq-accordian-block 2  ${
-                    faq === "2" ? "iq-active" : ""
-                  }`}
+                  className={`iq-accordian-block 2  ${faq === "2" ? "iq-active" : ""
+                    }`}
                   onClick={() => {
                     setfaq("2");
                   }}
@@ -68,26 +59,18 @@ const FAQPage = memo(() => {
                     </h4>
                   </div>
                   <div
-                    className={`iq-accordian-details ${
-                      faq === "2" ? "d-block" : "d-none"
-                    }`}
+                    className={`iq-accordian-details ${faq === "2" ? "d-block" : "d-none"
+                      }`}
                   >
                     <p className="mb-0">
-                      {" "}
-                      It is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal distribution of letters, as
-                      opposed to using ‘Content here, content here’, making it
-                      look like readable English.{" "}
+                      Yes, your ChatpataMovies account travels with you! You can access your subscription and watch content from anywhere in the world, provided you have a stable internet connection. Some specific titles may vary by region due to licensing agreements.
                     </p>
                   </div>
                 </div>
 
                 <div
-                  className={`iq-accordian-block 3  ${
-                    faq === "3" ? "iq-active" : ""
-                  }`}
+                  className={`iq-accordian-block 3  ${faq === "3" ? "iq-active" : ""
+                    }`}
                   onClick={() => {
                     setfaq("3");
                   }}
@@ -102,26 +85,23 @@ const FAQPage = memo(() => {
                     </h4>
                   </div>
                   <div
-                    className={`iq-accordian-details ${
-                      faq === "3" ? "d-block" : "d-none"
-                    }`}
+                    className={`iq-accordian-details ${faq === "3" ? "d-block" : "d-none"
+                      }`}
                   >
                     <p className="mb-0">
-                      {" "}
-                      It is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal distribution of letters, as
-                      opposed to using ‘Content here, content here’, making it
-                      look like readable English.{" "}
+                      If you experience buffering or playback errors, please try the following:<br />
+                      1. Check your internet connection speed (we recommend at least 5 Mbps for HD).<br />
+                      2. Reload the page or restart your app.<br />
+                      3. Clear your browser cache or app data.<br />
+                      4. Ensure your device or browser is up to date.<br />
+                      If the issue persists, please contact our support team.
                     </p>
                   </div>
                 </div>
 
                 <div
-                  className={`iq-accordian-block 4 ${
-                    faq === "4" ? "iq-active" : ""
-                  }`}
+                  className={`iq-accordian-block 4 ${faq === "4" ? "iq-active" : ""
+                    }`}
                   onClick={() => {
                     setfaq("4");
                   }}
@@ -136,26 +116,18 @@ const FAQPage = memo(() => {
                     </h4>
                   </div>
                   <div
-                    className={`iq-accordian-details ${
-                      faq === "4" ? "d-block" : "d-none"
-                    }`}
+                    className={`iq-accordian-details ${faq === "4" ? "d-block" : "d-none"
+                      }`}
                   >
                     <p className="mb-0">
-                      {" "}
-                      It is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal distribution of letters, as
-                      opposed to using ‘Content here, content here’, making it
-                      look like readable English.{" "}
+                      You can manage your notification preferences in your Profile settings. We send updates about new releases, subscription alerts, and special offers. You can opt-in or opt-out at any time.
                     </p>
                   </div>
                 </div>
 
                 <div
-                  className={`iq-accordian-block 5 ${
-                    faq === "5" ? "iq-active" : ""
-                  }`}
+                  className={`iq-accordian-block 5 ${faq === "5" ? "iq-active" : ""
+                    }`}
                   onClick={() => {
                     setfaq("5");
                   }}
@@ -170,18 +142,16 @@ const FAQPage = memo(() => {
                     </h4>
                   </div>
                   <div
-                    className={`iq-accordian-details ${
-                      faq === "5" ? "d-block" : "d-none"
-                    }`}
+                    className={`iq-accordian-details ${faq === "5" ? "d-block" : "d-none"
+                      }`}
                   >
                     <p className="mb-0">
-                      {" "}
-                      It is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal distribution of letters, as
-                      opposed to using ‘Content here, content here’, making it
-                      look like readable English.{" "}
+                      Our subscription packs offer:<br />
+                      - Ad-free unlimited streaming.<br />
+                      - High-Definition (HD) and 4K viewing options.<br />
+                      - Offline downloads on mobile devices.<br />
+                      - Access to exclusive premium content and early releases.<br />
+                      - Simultaneous streaming on multiple devices (depending on the plan).
                     </p>
                   </div>
                 </div>
