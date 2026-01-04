@@ -511,7 +511,7 @@ const EpisodePage = memo(() => {
                             <div className="d-flex align-items-center p-3" style={{ background: '#141414', borderBottom: '1px solid #222' }}>
                                 <Link href={`/tv-shows/${seriesSlug}`} className="text-decoration-none d-flex align-items-center text-white gap-2">
                                     <i className="fa-solid fa-arrow-left font-size-18"></i>
-                                    <span className="font-size-16 fw-500">Back to Show</span>
+                                    <img src="/assets/images/chatpata.png" alt="Back to Show" style={{ height: '30px', objectFit: 'contain' }} />
                                 </Link>
                             </div>
 
