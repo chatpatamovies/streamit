@@ -96,12 +96,23 @@ const HeaderDefault = memo((
   return (
     <Fragment>
       <header className="header-center-home header-default header-sticky">
+        {/* Style for mobile logo centering */}
+        <style jsx>{`
+          @media (max-width: 1199px) {
+            .mobile-logo-center {
+              position: absolute;
+              left: 50%;
+              transform: translateX(-50%);
+              z-index: 10;
+            }
+          }
+        `}</style>
         <Navbar
           expand="xl"
           className="nav navbar-light iq-navbar header-hover-menu py-xl-0"
         >
           <Container fluid className="navbar-inner">
-            <div className="d-flex align-items-center justify-content-between w-100 landing-header">
+            <div className="d-flex align-items-center justify-content-between w-100 landing-header position-relative">
               <div className="d-flex gap-3 gap-xl-0 align-items-center">
                 <div>
                   <button
@@ -120,7 +131,9 @@ const HeaderDefault = memo((
                     </svg>
                   </button>
                 </div>
-                <Logo></Logo>
+                <div className="mobile-logo-center">
+                  <Logo></Logo>
+                </div>
               </div>
               <Navbar
                 expand="xl"
