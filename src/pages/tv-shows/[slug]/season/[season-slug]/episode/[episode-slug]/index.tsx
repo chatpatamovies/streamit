@@ -200,6 +200,9 @@ const PricingPlansModal = ({ show, onHide, onPurchaseSuccess }: { show: boolean,
                     display: flex;
                     flex-direction: column;
                     height: 100%;
+                    margin: 0 auto; /* Centering fix */
+                    max-width: 380px; /* Optional: limit width for better aesthetics */
+                    width: 100%;
                 }
                 .pricing-card:hover {
                     transform: translateY(-8px);
@@ -274,7 +277,7 @@ const PricingPlansModal = ({ show, onHide, onPurchaseSuccess }: { show: boolean,
                     ) : (
                         <Row className="justify-content-center">
                             {plans.map((plan) => (
-                                <Col lg="6" md="6" className="mb-4 d-flex" key={plan.id}>
+                                <Col lg="6" md="6" className="mb-4 d-flex justify-content-center" key={plan.id}>
                                     <div className={`pricing-card ${plan.name.toLowerCase().includes('premium') ? 'premium-card' : ''}`}>
                                         {plan.name.toLowerCase().includes('premium') && <div className="premium-badge">Most Popular</div>}
                                         <div className="plan-header">
