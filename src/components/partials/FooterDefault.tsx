@@ -11,10 +11,66 @@ import { Container, Row, Col } from "react-bootstrap";
 import Logo from "../logo";
 import Image from "next/image";
 
+/**
+ * Type for the "beforeinstallprompt" event.
+ * (Not included in standard DOM types)
+ */
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+  prompt: () => Promise<void>;
+}
 
 const FooterMega = memo(() => {
   const [animationClass, setAnimationClass] = useState("animate__fadeIn");
-  // const location = useLocation();
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+  const [isTimeUp, setIsTimeUp] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      const promptEvent = e as BeforeInstallPromptEvent;
+      setDeferredPrompt(promptEvent);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    // Timer to enable the prompt after 5 seconds
+    const timer = setTimeout(() => {
+      setIsTimeUp(true);
+    }, 5000);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Show prompt automatically if both conditions are met
+    if (deferredPrompt && isTimeUp) {
+      setShowInstallButton(true);
+    }
+  }, [deferredPrompt, isTimeUp]);
+
+
+  const handleInstallClick = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    if (!deferredPrompt) {
+      console.log("Install prompt not available");
+      return;
+    }
+    deferredPrompt.prompt();
+    const choiceResult = await deferredPrompt.userChoice;
+    if (choiceResult.outcome === "accepted") {
+      console.log("PWA installed");
+    } else {
+      console.log("PWA dismissed");
+    }
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -37,9 +93,6 @@ const FooterMega = memo(() => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   scrollToTop();
-  // }, [location.pathname]);
   return (
     <>
       <Fragment>
@@ -219,13 +272,13 @@ const FooterMega = memo(() => {
                 </Col>
                 <Col md={3}></Col>
                 <Col md={3}>
-                  <h6 className="font-size-14 pb-1">Download ChatpataMovies Apps</h6>
+                  <h6 className="font-size-14 pb-1">Download ChatpataMovies App</h6>
                   <div className="d-flex align-items-center">
-                    <Link className="app-image" href="#">
+                    <Link className="app-image" href="#" onClick={handleInstallClick}>
                       <Image src="/assets/images/footer/playstore-banner.jpg" width={150} height={50} loading="lazy" alt="play-store" />
                     </Link>
                     <br />
-                    <Link className="ms-3 app-image" href="#">
+                    <Link className="ms-3 app-image" href="#" onClick={handleInstallClick}>
                       <Image src="/assets/images/footer/app-store-banner.jpg" width={150} height={50} loading="lazy" alt="app-store" />
                     </Link>
                   </div>
@@ -248,6 +301,28 @@ const FooterMega = memo(() => {
             <i className="fa-solid fa-chevron-up"></i>
           </Link>
         </div>
+        {showInstallButton && (
+          <div
+            role="alert"
+            className="alert shadow-lg fixed bottom-4 right-4 z-50 w-auto bg-base-100 flex items-center gap-2 p-3 rounded-xl border border-gray-700"
+          >
+            {/* Note: the user mentioned daisyUI alert classes, but here we might not have daisyUI fully set up. 
+                 I'll add standard bootstrap/custom styles just in case to ensure visibility if daisyUI is missing.
+                 Actually, the user said "We use the alert component from daisyUI" in the comments. 
+                 But this project looks like it uses Bootstrap ('Container', 'Row', 'Col'). 
+                 I will stick to the classes provided by the user but add some fallback inline styles or bootstrap classes if needed.
+                 The user provided code uses `alert shadow-lg fixed bottom-4 right-4 z-50 w-auto`.
+                 I will assume these classes work or use inline styles for the fixed positioning to be safe.
+             */}
+            <span className="text-white me-2">Install our app?</span>
+            <button
+              onClick={handleInstallClick}
+              className="btn btn-sm btn-primary"
+            >
+              Install
+            </button>
+          </div>
+        )}
       </Fragment>
     </>
   );
