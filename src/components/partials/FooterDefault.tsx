@@ -1,75 +1,21 @@
 import { memo, Fragment, useState, useEffect } from "react";
-
 import Link from "next/link";
 
 // react-bootstrap
 import { Container, Row, Col } from "react-bootstrap";
 
-
-
 // components
 import Logo from "../logo";
 import Image from "next/image";
-
-/**
- * Type for the "beforeinstallprompt" event.
- * (Not included in standard DOM types)
- */
-interface BeforeInstallPromptEvent extends Event {
-  readonly platforms: string[];
-  readonly userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
-  prompt: () => Promise<void>;
-}
+import { usePWA } from "@/providers/PWAProvider";
 
 const FooterMega = memo(() => {
   const [animationClass, setAnimationClass] = useState("animate__fadeIn");
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [showInstallButton, setShowInstallButton] = useState(false);
-  const [isTimeUp, setIsTimeUp] = useState(false);
+  const { install } = usePWA();
 
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      const promptEvent = e as BeforeInstallPromptEvent;
-      setDeferredPrompt(promptEvent);
-    };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-
-    // Timer to enable the prompt after 5 seconds
-    const timer = setTimeout(() => {
-      setIsTimeUp(true);
-    }, 5000);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      clearTimeout(timer);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Show prompt automatically if both conditions are met
-    if (deferredPrompt && isTimeUp) {
-      setShowInstallButton(true);
-    }
-  }, [deferredPrompt, isTimeUp]);
-
-
-  const handleInstallClick = async (e?: React.MouseEvent) => {
+  const handleInstallClick = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
-    if (!deferredPrompt) {
-      console.log("Install prompt not available");
-      return;
-    }
-    deferredPrompt.prompt();
-    const choiceResult = await deferredPrompt.userChoice;
-    if (choiceResult.outcome === "accepted") {
-      console.log("PWA installed");
-    } else {
-      console.log("PWA dismissed");
-    }
-    setDeferredPrompt(null);
-    setShowInstallButton(false);
+    install();
   };
 
   const scrollToTop = () => {
@@ -301,58 +247,6 @@ const FooterMega = memo(() => {
             <i className="fa-solid fa-chevron-up"></i>
           </Link>
         </div>
-        {showInstallButton && (
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 9999,
-              backgroundColor: 'rgba(0,0,0,0.85)',
-              backdropFilter: 'blur(8px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden'
-            }}
-          >
-            <div
-              className="pwa-modal"
-              style={{
-                backgroundColor: '#191919',
-                padding: '2.5rem',
-                borderRadius: '16px',
-                maxWidth: '400px',
-                width: '90%',
-                textAlign: 'center',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
-              }}
-            >
-              <div className="mb-4 d-flex justify-content-center">
-                <Logo />
-              </div>
-              <h3 className="text-white mb-3" style={{ fontSize: '1.5rem', fontWeight: 700 }}>Install App</h3>
-              <p className="text-gray-400 mb-4" style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                Install our application for the best streaming experience, offline access, and faster performance.
-              </p>
-
-              <button
-                onClick={handleInstallClick}
-                className="btn btn-primary w-100 py-3 rounded-3"
-                style={{
-                  fontWeight: 600,
-                  letterSpacing: '0.5px',
-                  boxShadow: '0 4px 12px rgba(229, 9, 20, 0.4)'
-                }}
-              >
-                INSTALL NOW
-              </button>
-            </div>
-          </div>
-        )}
       </Fragment>
     </>
   );

@@ -25,6 +25,7 @@ import { ClientProvider } from "@/providers/client.provider";
 import { formatTime } from "@/helper/ms-to-hm";
 import { fetchStreamSource } from "@/helper/fetch-stream-details";
 import { TVShow, Season, Episode } from "@/types/pb.types";
+import { usePWA } from "@/providers/PWAProvider";
 
 // Helper to get correct PocketBase file URL
 const getPbImageUrl = (
@@ -329,6 +330,7 @@ const PricingPlansModal = ({ show, onHide, onPurchaseSuccess }: { show: boolean,
 const EpisodePage = memo(() => {
     useEnterExit();
     const router = useRouter();
+    const { isInstallable, setShowModal: setShowPWAModal } = usePWA();
 
     const { slug: seriesSlug, 'season-slug': seasonSlug, 'episode-slug': episodeSlug } = router.query;
     const themeSchemeDirection = useSelector(theme_scheme_direction);
@@ -373,6 +375,13 @@ const EpisodePage = memo(() => {
 
     const { mutate, data: streamSource, error: streamSourceError, isPending: streamLoading } = useMutation({
         mutationFn: fetchStreamSource,
+        onSuccess: () => {
+            // Successful stream fetch means user has access (logged in + premium).
+            // If PWA is installable, show the prompt now.
+            if (isInstallable) {
+                setShowPWAModal(true);
+            }
+        },
         onError: (error: any) => {
             // If the error is 401 (Unauthorized), show the login modal
             if (error?.status === 401) {

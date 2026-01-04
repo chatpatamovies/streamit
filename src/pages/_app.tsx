@@ -11,6 +11,7 @@ import Frontend from "@/layouts/Frontend";
 import Blank from '@/layouts/blank';
 import Merchandise from '@/layouts/MerchandiseLayout';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { PWAProvider } from "@/providers/PWAProvider";
 
 //store
 import { Provider } from 'react-redux';
@@ -39,13 +40,14 @@ export default function App({ Component, ...rest }: AppPropsWithLayout) {
   return (
     <Provider store={store}>
       {/* <SSRProvider> */}
-      <AppLayout>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </AppLayout>
-      {/* </SSRProvider> */}
-      <SpeedInsights />
+      <PWAProvider>
+        <AppLayout>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AppLayout>
+        <SpeedInsights />
+      </PWAProvider>
     </Provider>
   )
 }
