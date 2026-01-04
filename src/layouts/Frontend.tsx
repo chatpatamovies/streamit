@@ -13,7 +13,7 @@ import FooterDefault from "../components/partials/FooterDefault";
 import BreadCrumbWidget from "@/components/BreadcrumbWidget";
 
 //seetingoffCanvas
-import SettingOffCanvas from "../components/setting/SettingOffCanvas";
+// import SettingOffCanvas from "../components/setting/SettingOffCanvas";
 import pb from "@/lib/pocketbase";
 import { useRouter } from "next/navigation";
 
@@ -78,7 +78,7 @@ const Frontend = (({ children }: any) => {
           <i className="fa-solid fa-chevron-up"></i>
         </Link>
       </div>
-      <SettingOffCanvas />
+      {/* <SettingOffCanvas /> */}
     </>
   )
 })
