@@ -458,7 +458,7 @@ const EpisodePage = memo(() => {
         const message = streamSourceError.message || "An unexpected error occurred.";
         return (
             <Alert variant="danger" className="text-center m-0">
-                <Alert.Heading>Sorry! 😢</Alert.Heading>
+                <Alert.Heading>Oh Sorry! We are unable to load the video</Alert.Heading>
                 {
                     process.env.NODE_ENV === "development" && <p>{message}</p>
                 }
@@ -511,7 +511,8 @@ const EpisodePage = memo(() => {
                             <div className="d-flex align-items-center p-3" style={{ background: '#141414', borderBottom: '1px solid #222' }}>
                                 <Link href={`/tv-shows/${seriesSlug}`} className="text-decoration-none d-flex align-items-center text-white gap-2">
                                     <i className="fa-solid fa-arrow-left font-size-18"></i>
-                                    <img src="/assets/images/chatpata.png" alt="Back to Show" style={{ height: '30px', objectFit: 'contain' }} />
+                                    {series?.title || seriesSlug}
+                                    {/* <img src="/assets/images/chatpata-favicon.png" alt="Back to Show" style={{ height: '30px', objectFit: 'contain' }} /> */}
                                 </Link>
                             </div>
 
