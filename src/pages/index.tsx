@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 
 // hero slider
 import MovieHeroSlider from "@/components/slider/MovieHeroSlider";
@@ -14,7 +14,22 @@ import Link from "next/link";
 // Import the CSS file you will create in the next step
 
 const Movies = memo(() => {
-    useEnterExit()
+    useEnterExit();
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
         <>
             {/* Your existing page content */}
@@ -27,14 +42,16 @@ const Movies = memo(() => {
 
             {/* The new floating buttons container */}
             <div className="floating-buttons-container">
-                <Link href={"/extra/pricing-plan"} className="floating-button subscribe-btn">
+                <Link href={"/extra/pricing-plan"} className={`floating-button subscribe-btn ${isScrolled ? 'scrolled' : ''}`}>
                     <i className="fa-solid fa-crown"></i>
-                    <span>Subscribe</span>
+                    {!isScrolled && <span>Subscribe</span>}
                 </Link>
-                <button className="floating-button support-btn">
-                    <i className="fa-solid fa-headset"></i>
-                    <span>Support Chat</span>
-                </button>
+                {!isScrolled && (
+                    <button className="floating-button support-btn">
+                        <i className="fa-solid fa-headset"></i>
+                        <span>Support Chat</span>
+                    </button>
+                )}
             </div>
         </>
     );
