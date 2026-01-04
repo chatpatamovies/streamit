@@ -9,6 +9,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 // components
 import Logo from "../logo";
+import Image from "next/image";
 
 
 const FooterMega = memo(() => {
@@ -221,11 +222,11 @@ const FooterMega = memo(() => {
                   <h6 className="font-size-14 pb-1">Download ChatpataMovies Apps</h6>
                   <div className="d-flex align-items-center">
                     <Link className="app-image" href="#">
-                      <img src="/assets/images/footer/google-play.webp" loading="lazy" alt="play-store" />
+                      <Image src="/assets/images/footer/playstore-banner.jpg" width={150} height={50} loading="lazy" alt="play-store" />
                     </Link>
                     <br />
                     <Link className="ms-3 app-image" href="#">
-                      <img src="/assets/images/footer/apple.webp" loading="lazy" alt="app-store" />
+                      <Image src="/assets/images/footer/app-store-banner.jpg" width={150} height={50} loading="lazy" alt="app-store" />
                     </Link>
                   </div>
                 </Col>
