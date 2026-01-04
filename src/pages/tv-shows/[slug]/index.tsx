@@ -1,14 +1,14 @@
-import React, { Fragment, memo, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 // react-bootstrap: Added Spinner and Alert for better UI feedback
 import { Row, Col, Container, Nav, Tab, Form, Spinner, Alert } from "react-bootstrap";
 
 // Next-Link
-import Link from 'next/link'
+import Link from 'next/link';
 
 // components
-import ReviewComponent from "@/components/ReviewComponent";
-import { Swiper, SwiperSlide } from "swiper/react";
+// import ReviewComponent from "@/components/ReviewComponent";
+// import { Swiper, SwiperSlide } from "swiper/react";
 import RatingStar from "@/components/rating-star";
 
 // function
@@ -18,7 +18,6 @@ import { generateImgPath } from "@/StaticData/data"; // Assuming this is a local
 import { useEnterExit } from "@/utilities/usePage";
 
 // swiper
-import { Navigation } from "swiper";
 import pb from "@/lib/pocketbase";
 import { ClientProvider } from "@/providers/client.provider";
 import { useRouter } from "next/router";
@@ -98,10 +97,10 @@ const ShowsDetailPage = () => {
             </Container>
         );
     }
-    
+
     if (!show) {
         return (
-             <Container className="py-5">
+            <Container className="py-5">
                 <Alert variant="warning" className="text-center">
                     <Alert.Heading>Show Not Found</Alert.Heading>
                     <p>
@@ -143,7 +142,7 @@ const ShowsDetailPage = () => {
                     >
                         {/* New Animated Play Button */}
                         <div className="video-play-button">
-                             <Link href={`/tv-shows/${show.slug}/season/${selectedSeason?.season_no || 1}/episode/1`}>
+                            <Link href={`/tv-shows/${show.slug}/season/${selectedSeason?.season_no || 1}/episode/1`}>
                                 <div className="pulse-button">
                                     <i className="fa-solid fa-play"></i>
                                 </div>
@@ -182,7 +181,7 @@ const ShowsDetailPage = () => {
                                 </div>
                                 <p className="line-count-2 my-3">{show.detail}</p>
                             </div>
-                            
+
                             {/* The old "Watch Now" button was here and has been removed */}
 
                             <ul className="iq-blogtag list-unstyled d-flex flex-wrap align-items-center gap-3 p-0">

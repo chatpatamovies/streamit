@@ -15,12 +15,16 @@ import BreadCrumbWidget from "@/components/BreadcrumbWidget";
 //seetingoffCanvas
 // import SettingOffCanvas from "../components/setting/SettingOffCanvas";
 import pb from "@/lib/pocketbase";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const Frontend = (({ children }: any) => {
 
   const router = useRouter();
   const [animationClass, setAnimationClass] = useState("animate__fadeIn");
+
+  // Check if we are on an episode page (streaming page)
+  const isEpisodePage = router.pathname.includes("/episode/");
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -44,26 +48,28 @@ const Frontend = (({ children }: any) => {
 
   return (
     <>
-      <main className="main-content">
-        <BreadCrumbWidget />
-        <HeaderDefault profile={
-          {
-            name: pb.authStore.record?.name,
-            avatar: pb.authStore.record?.avatar,
-            uid: pb.authStore.record?.id || "",
-            collectionId: pb.authStore.record?.collectionId || ""
+      <main className={`main-content ${isEpisodePage ? 'p-0' : ''}`} style={isEpisodePage ? { paddingTop: '0', marginTop: '0' } : {}}>
+        {!isEpisodePage && <BreadCrumbWidget />}
+        {!isEpisodePage && (
+          <HeaderDefault profile={
+            {
+              name: pb.authStore.record?.name,
+              avatar: pb.authStore.record?.avatar,
+              uid: pb.authStore.record?.id || "",
+              collectionId: pb.authStore.record?.collectionId || ""
+            }
           }
-        }
-          onLogout={() => {
-            pb.authStore.clear();
-            router.push("/");
-          }
-          }
-        />
+            onLogout={() => {
+              pb.authStore.clear();
+              router.push("/");
+            }
+            }
+          />
+        )}
 
         {children}
       </main>
-      <FooterDefault />
+      {!isEpisodePage && <FooterDefault />}
       <div
         id="back-to-top"
         style={{ display: "none" }}

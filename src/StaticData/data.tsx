@@ -848,39 +848,11 @@ export const sectionSliders = [
 
 export const populerSlider = [
   {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
+    image: generateImgPath("/assets/images/tv-show/tharki-sarapanch/tharkisarapanchbanner.jpg"),
+    title: "Tharki Sarapanch",
     movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
+    slug: "tharki-sarapanch",
+    type: "tv-shows"
   }
 ];
 
@@ -942,32 +914,11 @@ export const verticleLatestMovies = [
 
 export const recommendedforYou = [
   {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
+    image: generateImgPath("/assets/images/tv-show/tharki-sarapanch/tharkisarapanchbanner.jpg"),
     title: "Adhuri",
     movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
+    slug: "tharki-sarapanch",
+    type: "tv-shows"
   }
 ];
 
@@ -1336,25 +1287,11 @@ export const suggested = [
 
 export const spacialLatestMovie = [
   {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
+    image: generateImgPath("/assets/images/tv-show/tharki-sarapanch/tharkisarapanchbanner.jpg"),
     title: "Adhuri",
     movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
-  },
-  {
-    image: generateImgPath("/assets/images/uploads/adhuri_522.jpg"),
-    title: "Adhuri",
-    movieTime: "2hr: 12mins",
-    slug:"andheri-raat",
-    type:"tv-shows"
+    slug: "tharki-sarapanch",
+    type: "tv-shows"
   }
 ];
 export const upcommingMovie = [

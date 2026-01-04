@@ -161,7 +161,7 @@ const PricingPlansModal = ({ show, onHide, onPurchaseSuccess }: { show: boolean,
                             throw new Error(verifyData.message || 'Payment verification failed.');
                         }
                     } catch (error: any) {
-                         Swal.fire({ icon: 'error', title: 'Verification Error', text: error.message });
+                        Swal.fire({ icon: 'error', title: 'Verification Error', text: error.message });
                     }
                 },
                 prefill: {
@@ -437,7 +437,7 @@ const EpisodePage = memo(() => {
             </Container>
         );
     }
-    
+
     // This function now only handles generic errors, as 401 and 403 trigger modals.
     const renderStreamError = () => {
         if (!streamSourceError) return null;
@@ -447,9 +447,9 @@ const EpisodePage = memo(() => {
             <Alert variant="danger" className="text-center m-0">
                 <Alert.Heading>Sorry! 😢</Alert.Heading>
                 {
-                    process.env.NODE_ENV === "development" && <p>{message}</p> 
+                    process.env.NODE_ENV === "development" && <p>{message}</p>
                 }
-                
+
                 <Button variant="primary" onClick={() => router.reload()}>
                     Play
                 </Button>
@@ -482,7 +482,7 @@ const EpisodePage = memo(() => {
                     </div>
                 </Modal.Body>
             </Modal>
-            
+
             {/* NEW Pricing Plans Modal */}
             <PricingPlansModal
                 show={showPricingModal}
@@ -491,10 +491,16 @@ const EpisodePage = memo(() => {
             />
 
             <div className="iq-main-slider site-video">
-                <Container fluid>
-                    <Row>
-                        <Col lg="12">
-                            <div className="video-container" style={{ position: 'relative', paddingTop: '56.25%', background: '#000' }}>
+                <Container fluid className="p-0">
+                    <Row className="m-0">
+                        <Col lg="12" className="p-0 position-relative">
+                            <div style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 1000 }}>
+                                <Link href={`/tv-shows/${seriesSlug}`} className="btn btn-primary rounded-circle p-0 d-flex align-items-center justify-content-center" style={{ width: '45px', height: '45px', boxShadow: '0 4px 10px rgba(0,0,0,0.5)' }}>
+                                    <i className="fa-solid fa-arrow-left font-size-18"></i>
+                                </Link>
+                            </div>
+
+                            <div className="video-container" style={{ position: 'relative', paddingTop: '56.25%', background: '#000', maxHeight: '100vh' }}>
                                 {(streamLoading || (isIframeLoading && !streamSourceError)) && (
                                     <div className="d-flex justify-content-center align-items-center" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
                                         <Spinner animation="border" variant="primary" />
@@ -521,7 +527,7 @@ const EpisodePage = memo(() => {
                     </Row>
                 </Container>
             </div>
-            
+
             {/* --- REST OF THE PAGE JSX (No changes below this line) --- */}
 
             <div className="details-part">
