@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 
 // react-bootstrap: Added Spinner and Alert for better UI feedback
-import { Row, Col, Container, Nav, Tab, Form, Spinner, Alert } from "react-bootstrap";
+import { Row, Col, Container, Nav, Tab, Form, Spinner, Alert, Modal, Button } from "react-bootstrap";
 
 // Next-Link
 import Link from 'next/link';
-
 // components
 // import ReviewComponent from "@/components/ReviewComponent";
 // import { Swiper, SwiperSlide } from "swiper/react";
@@ -41,6 +40,7 @@ const ShowsDetailPage = () => {
 
     // State to manage the selected season
     const [selectedSeason, setSelectedSeason] = useState<Season | null>(null);
+    const [showTrailer, setShowTrailer] = useState(false);
 
     useEnterExit();
 
@@ -140,13 +140,46 @@ const ShowsDetailPage = () => {
                             backgroundRepeat: "no-repeat",
                         }}
                     >
-                        {/* New Animated Play Button */}
-                        <div className="video-play-button">
-                            <Link href={`/tv-shows/${show.slug}/season/${selectedSeason?.season_no || 1}/episode/1`}>
-                                <div className="pulse-button">
-                                    <i className="fa-solid fa-play"></i>
+                        {/* Center Action Buttons */}
+                        <div className="position-absolute top-50 start-50 translate-middle text-center z-3 w-100">
+                            {/* Primary Play Button (Episode 1) */}
+                            <Link href={`/tv-shows/${show.slug}/season/${selectedSeason?.season_no || 1}/episode/1`} className="d-inline-block mb-3 text-decoration-none">
+                                <div className="pulse-button d-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px', margin: '0 auto' }}>
+                                    <i className="fa-solid fa-play ps-1" style={{ fontSize: '30px' }}></i>
                                 </div>
                             </Link>
+
+                            {/* Watch Trailer Button (Conditional) */}
+                            {show.trailer && (
+                                <div className="mt-3">
+                                    <Button
+                                        onClick={() => setShowTrailer(true)}
+                                        className="btn-hover text-uppercase fw-bold d-inline-flex align-items-center gap-2"
+                                        style={{
+                                            padding: "12px 32px",
+                                            letterSpacing: "1px",
+                                            background: "rgba(229, 9, 20, 0.9)",
+                                            border: "1px solid #e50914",
+                                            color: "#fff",
+                                            backdropFilter: "blur(4px)",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            transition: "all 0.3s ease"
+                                        }}
+                                        onMouseOver={(e) => {
+                                            e.currentTarget.style.background = "#fff";
+                                            e.currentTarget.style.color = "#e50914";
+                                        }}
+                                        onMouseOut={(e) => {
+                                            e.currentTarget.style.background = "rgba(229, 9, 20, 0.9)";
+                                            e.currentTarget.style.color = "#fff";
+                                        }}
+                                    >
+                                        <i className="fa-solid fa-film"></i>
+                                        <span>Watch Trailer</span>
+                                    </Button>
+                                </div>
+                            )}
                         </div>
 
                         <div className="banner-caption">
@@ -202,6 +235,37 @@ const ShowsDetailPage = () => {
                     {/* ================================================================= */}
                     {/* END: MODIFIED BANNER SECTION                                      */}
                     {/* ================================================================= */}
+
+                    {/* Trailer Modal */}
+                    <Modal show={showTrailer} onHide={() => setShowTrailer(false)} size="xl" centered contentClassName="bg-black border-0 shadow-lg">
+                        <Modal.Header className="border-0 position-absolute w-100" style={{ zIndex: 10, background: 'linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)' }}>
+                            <Button variant="link" onClick={() => setShowTrailer(false)} className="ms-auto text-white fs-4 p-0 close-trailer-btn">
+                                <i className="fa-solid fa-xmark"></i>
+                            </Button>
+                        </Modal.Header>
+                        <Modal.Body className="p-0 bg-dark position-relative" style={{ minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {showTrailer && show.trailer && (
+                                <div className="ratio ratio-16x9 w-100 h-100">
+                                    {show.trailer.includes('http') || show.trailer.includes('youtube') ? (
+                                        <iframe
+                                            src={show.trailer.includes('youtube') && !show.trailer.includes('embed')
+                                                ? show.trailer.replace('watch?v=', 'embed/') + '?autoplay=1&modestbranding=1&rel=0'
+                                                : show.trailer}
+                                            title="Trailer"
+                                            allowFullScreen
+                                            allow="autoplay; encrypted-media"
+                                            style={{ width: '100%', height: '100%', border: 0 }}
+                                        ></iframe>
+                                    ) : (
+                                        <video controls autoPlay className="w-100 h-100" style={{ objectFit: 'contain' }} controlsList="nodownload">
+                                            <source src={getPbImageUrl(show, show.trailer)} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    )}
+                                </div>
+                            )}
+                        </Modal.Body>
+                    </Modal>
                 </Container>
             </div>
             <div className="show-detail section-padding">

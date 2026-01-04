@@ -336,7 +336,8 @@ const EpisodePage = memo(() => {
     // State for loaders and modals
     const [isIframeLoading, setIsIframeLoading] = useState(true);
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const [showPricingModal, setShowPricingModal] = useState(false); // New state for pricing modal
+    const [showPricingModal, setShowPricingModal] = useState(false);
+    const [showTrailer, setShowTrailer] = useState(false);
 
     const fetchSeriesData = async (slug: string) => {
         if (!slug) return;
@@ -506,12 +507,12 @@ const EpisodePage = memo(() => {
                             </div>
 
                             <div className="video-container" style={{ position: 'relative', paddingTop: '56.25%', background: '#000', maxHeight: '100vh' }}>
-                                {(streamLoading || (isIframeLoading && !streamSourceError)) && (
+                                {((streamLoading || (isIframeLoading && !streamSourceError)) && !showTrailer) && ( // Don't show loader if trailer is open
                                     <div className="d-flex justify-content-center align-items-center" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10 }}>
                                         <Spinner animation="border" variant="primary" />
                                     </div>
                                 )}
-                                {streamSource?.source && !streamSourceError && (
+                                {!showTrailer && streamSource?.source && !streamSourceError && (
                                     <iframe
                                         src={streamSource.source}
                                         onLoad={() => setIsIframeLoading(false)}
@@ -522,7 +523,7 @@ const EpisodePage = memo(() => {
                                     ></iframe>
                                 )}
                                 {/* Error Display (hidden when modals are active) */}
-                                {!streamLoading && streamSourceError && !showLoginModal && !showPricingModal && (
+                                {!streamLoading && streamSourceError && !showLoginModal && !showPricingModal && !showTrailer && (
                                     <div className="d-flex justify-content-center align-items-center p-md-5 p-3" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
                                         {renderStreamError()}
                                     </div>
@@ -560,9 +561,26 @@ const EpisodePage = memo(() => {
                                     <li className="font-size-18">{formatTime(currentEpisode?.duration || 0)}</li>
                                 </ul>
                             </Col>
-                            {series?.trailer && series.trailer.length > 0 &&
-                                <FsLightBox sources={[series.trailer]} image={getPbImageUrl(series, series?.thumbnail)} />
-                            }
+                            <Col md={3} className="col-12 mt-3 mt-md-0 d-flex justify-content-md-end align-items-center">
+                                {series?.trailer && (
+                                    <Button
+                                        onClick={() => setShowTrailer(true)}
+                                        className="btn-hover text-uppercase fw-bold d-inline-flex align-items-center gap-2"
+                                        style={{
+                                            padding: "10px 24px",
+                                            background: "#e50914",
+                                            border: "none",
+                                            color: "#fff",
+                                            borderRadius: "4px",
+                                            fontSize: "14px",
+                                            boxShadow: "0 4px 12px rgba(229, 9, 20, 0.4)"
+                                        }}
+                                    >
+                                        <i className="fa-solid fa-film"></i>
+                                        <span>Watch Trailer</span>
+                                    </Button>
+                                )}
+                            </Col>
                         </Row>
                     </div>
                     <div className="content-details trending-info">
@@ -666,6 +684,38 @@ const EpisodePage = memo(() => {
                     </div>
                 </Container>
             </div>
+
+            {/* Trailer Modal */}
+            <Modal show={showTrailer} onHide={() => setShowTrailer(false)} size="xl" centered contentClassName="bg-black border-0 shadow-lg">
+                <Modal.Header className="border-0 position-absolute w-100" style={{ zIndex: 10, background: 'linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)' }}>
+                    <Button variant="link" onClick={() => setShowTrailer(false)} className="ms-auto text-white fs-4 p-0 close-trailer-btn">
+                        <i className="fa-solid fa-xmark"></i>
+                    </Button>
+                </Modal.Header>
+                <Modal.Body className="p-0 bg-dark position-relative" style={{ minHeight: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {showTrailer && series?.trailer && (
+                        <div className="ratio ratio-16x9 w-100 h-100">
+                            {series.trailer.includes('http') || series.trailer.includes('youtube') ? (
+                                <iframe
+                                    src={series.trailer.includes('youtube') && !series.trailer.includes('embed')
+                                        ? series.trailer.replace('watch?v=', 'embed/') + '?autoplay=1&modestbranding=1&rel=0'
+                                        : series.trailer}
+                                    title="Trailer"
+                                    allowFullScreen
+                                    allow="autoplay; encrypted-media"
+                                    style={{ width: '100%', height: '100%', border: 0 }}
+                                ></iframe>
+                            ) : (
+                                <video controls autoPlay className="w-100 h-100" style={{ objectFit: 'contain' }} controlsList="nodownload">
+                                    <source src={getPbImageUrl(series, series.trailer)} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            )}
+                        </div>
+                    )}
+                </Modal.Body>
+            </Modal>
+
         </Fragment>
     );
 });
