@@ -10,6 +10,7 @@ import AppLayout from "@/layouts/App";
 import Frontend from "@/layouts/Frontend";
 import Blank from '@/layouts/blank';
 import Merchandise from '@/layouts/MerchandiseLayout';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 //store
 import { Provider } from 'react-redux';
@@ -44,6 +45,7 @@ export default function App({ Component, ...rest }: AppPropsWithLayout) {
         </Layout>
       </AppLayout>
       {/* </SSRProvider> */}
+      <SpeedInsights />
     </Provider>
   )
 }

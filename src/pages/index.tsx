@@ -48,7 +48,7 @@ const Movies = memo(() => {
                 {!isScrolled && (
                     <button className="floating-button support-btn">
                         <i className="fa-solid fa-headset"></i>
-                        <span>Support Chat</span>
+                        {/* <span></span> */}
                     </button>
                 )}
             </div>
