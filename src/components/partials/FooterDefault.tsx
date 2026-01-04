@@ -303,24 +303,54 @@ const FooterMega = memo(() => {
         </div>
         {showInstallButton && (
           <div
-            role="alert"
-            className="alert shadow-lg fixed bottom-4 right-4 z-50 w-auto bg-base-100 flex items-center gap-2 p-3 rounded-xl border border-gray-700"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 9999,
+              backgroundColor: 'rgba(0,0,0,0.85)',
+              backdropFilter: 'blur(8px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden'
+            }}
           >
-            {/* Note: the user mentioned daisyUI alert classes, but here we might not have daisyUI fully set up. 
-                 I'll add standard bootstrap/custom styles just in case to ensure visibility if daisyUI is missing.
-                 Actually, the user said "We use the alert component from daisyUI" in the comments. 
-                 But this project looks like it uses Bootstrap ('Container', 'Row', 'Col'). 
-                 I will stick to the classes provided by the user but add some fallback inline styles or bootstrap classes if needed.
-                 The user provided code uses `alert shadow-lg fixed bottom-4 right-4 z-50 w-auto`.
-                 I will assume these classes work or use inline styles for the fixed positioning to be safe.
-             */}
-            <span className="text-white me-2">Install our app?</span>
-            <button
-              onClick={handleInstallClick}
-              className="btn btn-sm btn-primary"
+            <div
+              className="pwa-modal"
+              style={{
+                backgroundColor: '#191919',
+                padding: '2.5rem',
+                borderRadius: '16px',
+                maxWidth: '400px',
+                width: '90%',
+                textAlign: 'center',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+              }}
             >
-              Install
-            </button>
+              <div className="mb-4 d-flex justify-content-center">
+                <Logo />
+              </div>
+              <h3 className="text-white mb-3" style={{ fontSize: '1.5rem', fontWeight: 700 }}>Install App</h3>
+              <p className="text-gray-400 mb-4" style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                Install our application for the best streaming experience, offline access, and faster performance.
+              </p>
+
+              <button
+                onClick={handleInstallClick}
+                className="btn btn-primary w-100 py-3 rounded-3"
+                style={{
+                  fontWeight: 600,
+                  letterSpacing: '0.5px',
+                  boxShadow: '0 4px 12px rgba(229, 9, 20, 0.4)'
+                }}
+              >
+                INSTALL NOW
+              </button>
+            </div>
           </div>
         )}
       </Fragment>
