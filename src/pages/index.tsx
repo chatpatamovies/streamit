@@ -33,12 +33,11 @@ const Movies = memo(() => {
     return (
         <>
             {/* Your existing page content */}
-            <div className="main-content">
-                <MovieHeroSlider />
-                <PopularMovies />
-                <SpecialsLatestMovies />
-                <MoviesRecommendedForYou />
-            </div>
+            <div style={{ marginTop: "10px" }}></div>
+            <MovieHeroSlider />
+            <PopularMovies />
+            <SpecialsLatestMovies />
+            <MoviesRecommendedForYou />
 
             {/* The new floating buttons container */}
             <div className="floating-buttons-container">
