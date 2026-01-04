@@ -268,7 +268,8 @@ const HeaderDefault = memo((
                 </Container>
               </Navbar>
               <div className="right-panel">
-                <Button
+                {/* Hamburger menu hidden as per request */}
+                {/* <Button
                   id="navbar-toggle"
                   bsPrefix="navbar-toggler"
                   type="button"
@@ -276,17 +277,16 @@ const HeaderDefault = memo((
                   data-bs-toggle="collapse"
                   data-bs-target="#navbarSupportedContent"
                   onClick={() => setShow(!show)}
+                  className="d-none" // Explicitly hide
                 >
                   <span className="navbar-toggler-btn">
                     <span className="navbar-toggler-icon"></span>
                   </span>
-                </Button>
-                <div
-                  className={`navbar-collapse ${show === true ? "collapse show" : "collapse"
-                    }`}
-                  id="navbarSupportedContent"
-                >
-                  <ul className="navbar-nav align-items-center ms-auto mb-2 mb-xl-0">
+                </Button> */}
+
+                {/* Direct display of Profile/Login without collapse */}
+                <div className="d-flex align-items-center">
+                  <ul className="navbar-nav align-items-center ms-auto mb-2 mb-xl-0 flex-row">
                     {mounted && profile && profile.uid ? (
                       <li className="nav-item">
                         <Link href="/profile" className="nav-link d-flex align-items-center gap-2" style={{ cursor: 'pointer' }}>
